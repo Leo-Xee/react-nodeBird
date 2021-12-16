@@ -4,6 +4,7 @@
     "es6": true,
     "node": true
   },
+  "parser": "@babel/eslint-parser",
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -17,9 +18,10 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "prettier"],
+  "plugins": ["react", "react-hooks", "prettier", "@babel"],
   "rules": {
     "jsx-a11y/anchor-is-valid": 0,
-    "react/function-component-definition": [{ "namedComponents": "function-declaration" }]
+    "react/function-component-definition": [{ "namedComponents": "function-declaration" }],
+    "@babel/semi": 1
   }
 }

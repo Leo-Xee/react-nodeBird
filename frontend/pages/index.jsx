@@ -1,7 +1,12 @@
-import React from 'react';
+import React from "react";
+import AppLayout from "../components/AppLayout";
 
 function index() {
-  return <div>Helloe World!!</div>;
+  return (
+    <AppLayout>
+      <div>Helloe World!!</div>
+    </AppLayout>
+  );
 }
 
 export default index;

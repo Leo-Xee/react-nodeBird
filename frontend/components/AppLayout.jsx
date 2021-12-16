@@ -6,7 +6,7 @@ function AppLayout({ children }) {
   return (
     <div>
       <div>
-        <Link href="/" passHref>
+        <Link href="/">
           <a>Home</a>
         </Link>
         <Link href="/profile">
