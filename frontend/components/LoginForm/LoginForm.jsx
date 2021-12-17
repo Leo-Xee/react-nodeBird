@@ -1,18 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
+import useInput from "../../hooks/useInput";
 
 function LoginForm({ setIsLoggedIn }) {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
-  }, []);
-
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-  }, []);
+  const [{ id, password }, onChange] = useInput({ id: "", password: "" });
 
   const onSubmitHandler = useCallback(() => {
     console.log(id, password);
@@ -22,11 +14,11 @@ function LoginForm({ setIsLoggedIn }) {
   return (
     <div>
       <Form onFinish={onSubmitHandler}>
-        <Form.Item label="아이디" name="userId">
-          <Input value={id} onChange={onChangeId} required />
+        <Form.Item label="아이디" name="id">
+          <Input value={id} onChange={onChange} required />
         </Form.Item>
-        <Form.Item label="비밀번호" name="userPassword">
-          <Input.Password value={password} onChange={onChangePassword} required />
+        <Form.Item label="비밀번호" name="password">
+          <Input.Password value={password} onChange={onChange} required />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
