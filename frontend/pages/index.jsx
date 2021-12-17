@@ -1,11 +1,17 @@
 import React from "react";
-import AppLayout from "../components/AppLayout";
+import AppLayout from "../components/AppLayout/AppLayout";
+import Head from "next/head";
 
 function index() {
   return (
-    <AppLayout>
-      <div>Helloe World!!</div>
-    </AppLayout>
+    <>
+      <Head>
+        <title>NodeBird</title>
+      </Head>
+      <AppLayout>
+        <div>Hello World!!</div>
+      </AppLayout>
+    </>
   );
 }
 

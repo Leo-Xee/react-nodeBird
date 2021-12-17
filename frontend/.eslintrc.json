@@ -15,13 +15,13 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 2020,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks", "prettier", "@babel"],
   "rules": {
     "jsx-a11y/anchor-is-valid": 0,
     "react/function-component-definition": [{ "namedComponents": "function-declaration" }],
-    "@babel/semi": 1
+    "semi": 1
   }
 }
