@@ -2,13 +2,16 @@ import React, { useCallback, useState } from "react";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import useInput from "../../hooks/useInput";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/actions/user_action";
 
-function LoginForm({ setIsLoggedIn }) {
+function LoginForm() {
   const [{ id, password }, onChange] = useInput({ id: "", password: "" });
+  const dispatch = useDispatch();
 
   const onSubmitHandler = useCallback(() => {
     console.log(id, password);
-    setIsLoggedIn(true);
+    dispatch(loginUser({ id, password }));
   }, [id, password]);
 
   return (

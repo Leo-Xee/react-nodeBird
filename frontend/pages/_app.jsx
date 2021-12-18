@@ -1,6 +1,7 @@
 import React from "react";
 import "antd/dist/antd.css";
 import Head from "next/head";
+import wrapper from "../redux/store/configureStore";
 
 function _App({ Component }) {
   return (
@@ -13,4 +14,4 @@ function _App({ Component }) {
   );
 }
 
-export default _App;
+export default wrapper.withRedux(_App);

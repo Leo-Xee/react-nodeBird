@@ -1,9 +1,13 @@
 import React from "react";
 import { Card, Avatar, Button } from "antd";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/actions/user_action";
 
-function UserProfile({ setIsLoggedIn }) {
+function UserProfile() {
+  const dispatch = useDispatch();
+
   const onLogOut = () => {
-    setIsLoggedIn(false);
+    dispatch(logoutUser());
   };
 
   return (
