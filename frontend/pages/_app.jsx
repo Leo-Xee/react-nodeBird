@@ -7,6 +7,7 @@ function _App({ Component }) {
   return (
     <>
       <Head>
+        <title>NodeBird</title>
         <meta charSet="UTF-8" />
       </Head>
       <Component />

@@ -5,7 +5,7 @@ const initialState = {
   loginDate: {},
 };
 
-const rootReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOG_IN_USER":
       return {
@@ -22,4 +22,4 @@ const rootReducer = (state = initialState, action) => {
   }
 };
 
-export default rootReducer;
+export default userReducer;
