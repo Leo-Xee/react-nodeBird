@@ -5,7 +5,7 @@ export function loginUser(data) {
   };
 }
 
-export function logoutUser(data) {
+export function logoutUser() {
   return {
     type: "LOG_OUT_USER",
   };
