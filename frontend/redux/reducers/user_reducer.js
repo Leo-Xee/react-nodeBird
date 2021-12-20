@@ -28,7 +28,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isLoggingIn: false,
         isLoggedIn: true,
-        user: { ...action.data, nickName: "Leo" },
+        user: { ...action.data, nickname: "Leo" },
       };
     case LOG_IN_FAILURE:
       return {

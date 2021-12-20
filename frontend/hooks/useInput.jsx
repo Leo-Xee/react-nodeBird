@@ -5,7 +5,6 @@ function useInput(initalForm) {
 
   const onChange = useCallback(
     (e) => {
-      console.dir(e.target);
       const { id, value } = e.target;
       setForm((form) => ({ ...form, [id]: value }));
     },
