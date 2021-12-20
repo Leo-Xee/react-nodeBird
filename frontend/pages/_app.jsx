@@ -1,9 +1,10 @@
 import React from "react";
 import "antd/dist/antd.css";
+import PropTypes from "prop-types";
 import Head from "next/head";
 import wrapper from "../redux/store/configureStore";
 
-function _App({ Component }) {
+function App({ Component }) {
   return (
     <>
       <Head>
@@ -15,4 +16,8 @@ function _App({ Component }) {
   );
 }
 
-export default wrapper.withRedux(_App);
+App.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+};
+
+export default wrapper.withRedux(App);

@@ -1,12 +1,14 @@
-export function loginUser(data) {
+import { LOG_IN_REQUEST, LOG_OUT_REQUEST } from "../reducers/user_reducer";
+
+export function loginRequest(data) {
   return {
-    type: "LOG_IN_USER",
+    type: LOG_IN_REQUEST,
     data,
   };
 }
 
-export function logoutUser() {
+export function logoutRequest() {
   return {
-    type: "LOG_OUT_USER",
+    type: LOG_OUT_REQUEST,
   };
 }

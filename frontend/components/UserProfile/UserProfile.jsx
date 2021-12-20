@@ -1,13 +1,14 @@
 import React from "react";
 import { Card, Avatar, Button } from "antd";
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../../redux/actions/user_action";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutRequest } from "../../redux/actions/user_action";
 
 function UserProfile() {
   const dispatch = useDispatch();
+  const { user, isLoggingOut } = useSelector((state) => state.user);
 
   const onLogOut = () => {
-    dispatch(logoutUser());
+    dispatch(logoutRequest());
   };
 
   return (
@@ -28,8 +29,13 @@ function UserProfile() {
           </div>,
         ]}
       >
-        <Card.Meta avatar={<Avatar>JM</Avatar>} title="JangMin" />
-        <Button onClick={onLogOut}>로그아웃</Button>
+        <Card.Meta
+          avatar={<Avatar>{user.nickname[0]}</Avatar>}
+          title={user.nickname}
+        />
+        <Button onClick={onLogOut} loading={isLoggingOut}>
+          로그아웃
+        </Button>
       </Card>
     </>
   );

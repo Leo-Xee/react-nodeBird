@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import useInput from "../../hooks/useInput";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/actions/user_action";
+import { loginRequest } from "../../redux/actions/user_action";
 
 function LoginForm() {
   const [{ id, password }, onChange] = useInput({ id: "", password: "" });
@@ -11,7 +11,7 @@ function LoginForm() {
 
   const onSubmitHandler = useCallback(() => {
     console.log(id, password);
-    dispatch(loginUser({ id, password }));
+    dispatch(loginRequest({ id, password }));
   }, [id, password]);
 
   return (

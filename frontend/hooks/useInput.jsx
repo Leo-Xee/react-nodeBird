@@ -8,7 +8,6 @@ function useInput(initalForm) {
       console.dir(e.target);
       const { id, value } = e.target;
       setForm((form) => ({ ...form, [id]: value }));
-      console.log(form);
     },
     [form],
   );
