@@ -27,9 +27,9 @@ const initialState = {
         },
         {
           User: {
-            nickname: "다현",
+            nickname: "나연",
           },
-          content: "멋있어요",
+          content: "좋아해요",
         },
       ],
     },

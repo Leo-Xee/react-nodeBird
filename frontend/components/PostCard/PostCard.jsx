@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import Proptypes from "prop-types";
-import { Avatar, Button, Card, Popover } from "antd";
+import { Avatar, Button, Card, Comment, List, Popover } from "antd";
 import {
   RetweetOutlined,
   HeartOutlined,
@@ -42,7 +42,6 @@ function PostCard({ post }) {
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
-
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
             key="ellipsis"
@@ -71,7 +70,21 @@ function PostCard({ post }) {
       </Card>
       {commentOpened && (
         <>
-          <CommentForm />
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length}개의 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  content={item.content}
+                />
+              </li>
+            )}
+          />
         </>
       )}
     </>
