@@ -1,58 +1,128 @@
+import {
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_IN_FAILURE,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILURE,
+} from "../actions/type";
+
 const initialState = {
-  isLoggingIn: false, // 로그인 진행중
-  isLoggedIn: false,
-  isLoggingOut: false, // 로그아웃 진행중
+  logInLoading: false,
+  logInDone: false,
+  logInError: null,
+  logOutLoading: false,
+  logOutDone: false,
+  logOutError: null,
+  followLoading: false,
+  followDone: false,
+  followError: null,
+  unfollowLoading: false,
+  unfollowDone: false,
+  unfollowError: null,
   user: null,
   signUpData: {},
   loginDate: {},
 };
 
-export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
-export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
-export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
-
-export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
-export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
-export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
+const dummyUser = (data) => {
+  return {
+    ...data,
+    nickname: "레오",
+    id: 1,
+    Posts: [{ id: 1 }],
+    Followings: [
+      { nickname: "다현" },
+      { nickname: "사나" },
+      { nickname: "나연" },
+    ],
+    Followers: [
+      { nickname: "다현" },
+      { nickname: "사나" },
+      { nickname: "나연" },
+    ],
+  };
+};
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_REQUEST:
       return {
         ...state,
-        isLoggingIn: true,
-        isLoggedIn: false,
+        logInLoading: true,
+        logInError: false,
+        logInDone: false,
       };
     case LOG_IN_SUCCESS:
       return {
         ...state,
-        isLoggingIn: false,
-        isLoggedIn: true,
-        user: { ...action.data, nickname: "Leo" },
+        logInLoading: false,
+        logInDone: true,
+        user: dummyUser(action.data),
       };
     case LOG_IN_FAILURE:
       return {
         ...state,
-        isLoggingIn: false,
-        isLoggedIn: false,
+        logInLoading: false,
+        logInError: action.error,
       };
     case LOG_OUT_REQUEST:
       return {
         ...state,
-        isLoggingOut: true,
-        isLoggedIn: true,
+        logOutLoading: true,
+        logOutError: false,
+        logOutDone: false,
       };
     case LOG_OUT_SUCCESS:
       return {
         ...state,
-        isLoggingOut: false,
-        isLoggedIn: false,
+        logOutLoading: false,
+        logOutDone: true,
+        user: null,
       };
     case LOG_OUT_FAILURE:
       return {
         ...state,
-        isLoggingOut: false,
-        isLoggedIn: false,
+        logOutLoading: false,
+        logOutError: action.error,
+      };
+    case FOLLOW_REQUEST:
+      return {
+        ...state,
+        followLoading: true,
+        followError: false,
+        followDone: false,
+      };
+    case FOLLOW_SUCCESS:
+      return {
+        ...state,
+        followLoading: false,
+        followDone: true,
+      };
+    case FOLLOW_FAILURE:
+      return {
+        ...state,
+        followLoading: false,
+        followError: action.error,
+      };
+    case UNFOLLOW_REQUEST:
+      return {
+        ...state,
+        unfollowLoading: true,
+        unfollowError: false,
+        unfollowDone: false,
+      };
+    case UNFOLLOW_SUCCESS:
+      return {
+        ...state,
+        unfollowLoading: false,
+        unfollowDone: true,
+      };
+    case UNFOLLOW_FAILURE:
+      return {
+        ...state,
+        unfollowLoading: false,
+        unfollowError: action.error,
       };
     default:
       return state;
