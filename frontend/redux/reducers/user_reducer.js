@@ -1,3 +1,4 @@
+import produce from "immer";
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -39,122 +40,78 @@ const dummyUser = (data) => {
     nickname: "레오",
     id: 1,
     Posts: [{ id: 1 }],
-    Followings: [
-      { nickname: "다현" },
-      { nickname: "사나" },
-      { nickname: "나연" },
-    ],
-    Followers: [
-      { nickname: "다현" },
-      { nickname: "사나" },
-      { nickname: "나연" },
-    ],
+    Followings: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
+    Followers: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
   };
 };
 
 const userReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case LOG_IN_REQUEST:
-      return {
-        ...state,
-        logInLoading: true,
-        logInError: false,
-        logInDone: false,
-      };
-    case LOG_IN_SUCCESS:
-      return {
-        ...state,
-        logInLoading: false,
-        logInDone: true,
-        user: dummyUser(action.data),
-      };
-    case LOG_IN_FAILURE:
-      return {
-        ...state,
-        logInLoading: false,
-        logInError: action.error,
-      };
-    case LOG_OUT_REQUEST:
-      return {
-        ...state,
-        logOutLoading: true,
-        logOutError: false,
-        logOutDone: false,
-      };
-    case LOG_OUT_SUCCESS:
-      return {
-        ...state,
-        logOutLoading: false,
-        logOutDone: true,
-        user: null,
-      };
-    case LOG_OUT_FAILURE:
-      return {
-        ...state,
-        logOutLoading: false,
-        logOutError: action.error,
-      };
-    case FOLLOW_REQUEST:
-      return {
-        ...state,
-        followLoading: true,
-        followError: false,
-        followDone: false,
-      };
-    case FOLLOW_SUCCESS:
-      return {
-        ...state,
-        followLoading: false,
-        followDone: true,
-      };
-    case FOLLOW_FAILURE:
-      return {
-        ...state,
-        followLoading: false,
-        followError: action.error,
-      };
-    case UN_FOLLOW_REQUEST:
-      return {
-        ...state,
-        unfollowLoading: true,
-        unfollowError: false,
-        unfollowDone: false,
-      };
-    case UN_FOLLOW_SUCCESS:
-      return {
-        ...state,
-        unfollowLoading: false,
-        unfollowDone: true,
-      };
-    case UN_FOLLOW_FAILURE:
-      return {
-        ...state,
-        unfollowLoading: false,
-        unfollowError: action.error,
-      };
-    case ADD_POST_TO_ME:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          Posts: [{ id: action.data.id }, ...state.user.Posts],
-        },
-      };
-    case REMOVE_POST_OF_ME:
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          Posts: [
-            ...state.user.Posts.filter(
-              (post) => post.id !== action.data.postId,
-            ),
-          ],
-        },
-      };
-    default:
-      return state;
-  }
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case LOG_IN_REQUEST:
+        draft.logInLoading = true;
+        draft.logInError = false;
+        draft.logInDone = false;
+        break;
+      case LOG_IN_SUCCESS:
+        draft.logInLoading = false;
+        draft.logInDone = true;
+        draft.user = dummyUser(action.data);
+        break;
+      case LOG_IN_FAILURE:
+        draft.logInLoading = false;
+        draft.logInError = action.error;
+        break;
+      case LOG_OUT_REQUEST:
+        draft.logOutLoading = true;
+        draft.logOutError = false;
+        draft.logOutDone = false;
+        break;
+      case LOG_OUT_SUCCESS:
+        draft.logOutLoading = false;
+        draft.logOutDone = true;
+        draft.user = null;
+        break;
+      case LOG_OUT_FAILURE:
+        draft.logOutLoading = false;
+        draft.logOutError = action.error;
+        break;
+      case FOLLOW_REQUEST:
+        draft.followLoading = true;
+        draft.followError = false;
+        draft.followDone = false;
+        break;
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false;
+        draft.followDone = true;
+        break;
+      case FOLLOW_FAILURE:
+        draft.followLoading = false;
+        draft.followError = action.error;
+        break;
+      case UN_FOLLOW_REQUEST:
+        draft.unfollowLoading = true;
+        draft.unfollowError = false;
+        draft.unfollowDone = false;
+        break;
+      case UN_FOLLOW_SUCCESS:
+        draft.unfollowLoading = false;
+        draft.unfollowDone = true;
+        break;
+      case UN_FOLLOW_FAILURE:
+        draft.unfollowLoading = false;
+        draft.unfollowError = action.error;
+        break;
+      case ADD_POST_TO_ME:
+        draft.user.Posts.unshift({ id: action.data.id });
+        break;
+      case REMOVE_POST_OF_ME:
+        draft.user.Posts = draft.user.Posts.filter((post) => post.id !== action.data.postId);
+        break;
+      default:
+        return state;
+    }
+  });
 };
 
 export default userReducer;
