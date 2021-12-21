@@ -5,6 +5,12 @@ import {
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  UN_FOLLOW_REQUEST,
+  UN_FOLLOW_SUCCESS,
+  UN_FOLLOW_FAILURE,
 } from "../actions/type";
 
 const initialState = {
@@ -105,20 +111,20 @@ const userReducer = (state = initialState, action) => {
         followLoading: false,
         followError: action.error,
       };
-    case UNFOLLOW_REQUEST:
+    case UN_FOLLOW_REQUEST:
       return {
         ...state,
         unfollowLoading: true,
         unfollowError: false,
         unfollowDone: false,
       };
-    case UNFOLLOW_SUCCESS:
+    case UN_FOLLOW_SUCCESS:
       return {
         ...state,
         unfollowLoading: false,
         unfollowDone: true,
       };
-    case UNFOLLOW_FAILURE:
+    case UN_FOLLOW_FAILURE:
       return {
         ...state,
         unfollowLoading: false,

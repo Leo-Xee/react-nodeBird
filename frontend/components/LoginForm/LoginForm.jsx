@@ -2,29 +2,30 @@ import React, { useCallback, useState } from "react";
 import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import useInput from "../../hooks/useInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../redux/actions/user_action";
 
 function LoginForm() {
-  const [{ id, password }, onChange] = useInput({ id: "", password: "" });
+  const [{ email, password }, onChange] = useInput({ email: "", password: "" });
+  const { logInLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const onSubmitHandler = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginRequest({ id, password }));
-  }, [id, password]);
+    console.log(email, password);
+    dispatch(loginRequest({ email, password }));
+  }, [email, password]);
 
   return (
     <div>
       <Form onFinish={onSubmitHandler}>
-        <Form.Item label="아이디" name="id">
-          <Input value={id} onChange={onChange} required />
+        <Form.Item label="이메일" name="email">
+          <Input type="email" value={email} onChange={onChange} required />
         </Form.Item>
         <Form.Item label="비밀번호" name="password">
           <Input.Password value={password} onChange={onChange} required />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={logInLoading}>
             로그인
           </Button>
           <Button type="default">
