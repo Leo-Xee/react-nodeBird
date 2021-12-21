@@ -6,12 +6,15 @@ import {
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
+  REMOVE_POST_REQUEST,
+  REMOVE_POST_SUCCESS,
+  REMOVE_POST_FAILURE,
 } from "../actions/type";
 
 const initialState = {
   mainPosts: [
     {
-      postId: 1,
+      id: 1,
       User: {
         id: 1,
         nickname: "레오",
@@ -48,6 +51,9 @@ const initialState = {
   addPostLoading: false,
   addPostError: null,
   addPostDone: false,
+  removePostLoading: false,
+  removePostError: null,
+  removePostDone: false,
   addCommentLoading: false,
   addCommentError: null,
   addCommentDone: false,
@@ -55,9 +61,9 @@ const initialState = {
 
 const dummyPost = (data) => {
   return {
-    postId: shortId.generate(),
+    id: data.id,
     User: { id: 1, nickname: "레오" },
-    content: data.text,
+    content: data.content,
     Images: [],
     Comments: [],
   };
@@ -92,6 +98,28 @@ const postReducer = (state = initialState, action) => {
         ...state,
         addPostLoading: false,
         addPostError: action.error,
+      };
+    case REMOVE_POST_REQUEST:
+      return {
+        ...state,
+        removePostLoading: true,
+        removePostError: null,
+        removePostDone: false,
+      };
+    case REMOVE_POST_SUCCESS:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostDone: true,
+        mainPosts: [
+          ...state.mainPosts.filter((post) => post.id !== action.data.postId),
+        ],
+      };
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.error,
       };
     case ADD_COMMENT_REQUEST:
       return {

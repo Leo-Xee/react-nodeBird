@@ -24,7 +24,7 @@ function PostForm() {
   }, [imageInput.current]);
 
   const onSubmit = () => {
-    dispatch(addPostRequest({ text }));
+    dispatch(addPostRequest({ content: text }));
   };
 
   return (

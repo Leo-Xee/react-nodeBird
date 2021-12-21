@@ -11,6 +11,8 @@ import {
   UN_FOLLOW_REQUEST,
   UN_FOLLOW_SUCCESS,
   UN_FOLLOW_FAILURE,
+  ADD_POST_TO_ME,
+  REMOVE_POST_OF_ME,
 } from "../actions/type";
 
 const initialState = {
@@ -129,6 +131,26 @@ const userReducer = (state = initialState, action) => {
         ...state,
         unfollowLoading: false,
         unfollowError: action.error,
+      };
+    case ADD_POST_TO_ME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          Posts: [{ id: action.data.id }, ...state.user.Posts],
+        },
+      };
+    case REMOVE_POST_OF_ME:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          Posts: [
+            ...state.user.Posts.filter(
+              (post) => post.id !== action.data.postId,
+            ),
+          ],
+        },
       };
     default:
       return state;
