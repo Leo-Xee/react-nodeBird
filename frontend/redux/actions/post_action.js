@@ -1,8 +1,4 @@
-import {
-  ADD_COMMENT_REQUEST,
-  ADD_POST_REQUEST,
-  REMOVE_POST_REQUEST,
-} from "./type";
+import { ADD_COMMENT_REQUEST, ADD_POST_REQUEST, REMOVE_POST_REQUEST } from "./type";
 
 export function addPostRequest(data) {
   return {

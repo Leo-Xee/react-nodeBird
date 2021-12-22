@@ -1,4 +1,5 @@
 import { all, delay, put, takeLatest, fork } from "redux-saga/effects";
+import shortid from "shortid";
 import {
   ADD_COMMENT_FAILURE,
   ADD_COMMENT_REQUEST,
@@ -12,7 +13,6 @@ import {
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
 } from "../actions/type";
-import shortid from "shortid";
 
 function* addPost(action) {
   const postId = shortid.generate();

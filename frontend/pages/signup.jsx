@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from "react";
 import Head from "next/head";
-import AppLayout from "../components/AppLayout/AppLayout";
-import useInput from "../hooks/useInput";
 import { Form, Input, Button, Checkbox } from "antd";
 import styled from "styled-components";
+
+import AppLayout from "../components/AppLayout/AppLayout";
+import useInput from "../hooks/useInput";
 
 const ErrorMessage = styled.div`
   color: red;
@@ -63,15 +64,9 @@ function signup() {
             <Input.Password value={password} onChange={onChange} required />
           </Form.Item>
           <Form.Item label="비밀번호 확인" name="passwordCheck">
-            <Input.Password
-              value={passwordCheck}
-              onChange={onChangePasswordCheck}
-              required
-            />
+            <Input.Password value={passwordCheck} onChange={onChangePasswordCheck} required />
           </Form.Item>
-          {isPasswordError && (
-            <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-          )}
+          {isPasswordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
           <Checkbox name="term" checked={term} onChange={onChangeTerm}>
             약관에 동의합니다.
           </Checkbox>

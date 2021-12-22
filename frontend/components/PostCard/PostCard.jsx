@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import Proptypes from "prop-types";
+import PropTypes from "prop-types";
 import { Avatar, Button, Card, Comment, List, Popover } from "antd";
 import {
   RetweetOutlined,
@@ -9,10 +9,10 @@ import {
   HeartTwoTone,
 } from "@ant-design/icons";
 
+import { useDispatch, useSelector } from "react-redux";
 import PostImages from "./PostImages/PostImages";
 import PostCardContent from "./PostCardContent/PostCardContent";
 import CommentForm from "./CommentForm/CommentForm";
-import { useDispatch, useSelector } from "react-redux";
 import { removePostRequest } from "../../redux/actions/post_action";
 
 function PostCard({ post }) {
@@ -40,11 +40,7 @@ function PostCard({ post }) {
         actions={[
           <RetweetOutlined key="tweet" />,
           like ? (
-            <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="heart"
-              onClick={onToggleLike}
-            />
+            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
           ) : (
             <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
@@ -100,14 +96,14 @@ function PostCard({ post }) {
 }
 
 PostCard.propTypes = {
-  post: Proptypes.shape({
-    id: Proptypes.number,
-    User: Proptypes.object,
-    content: Proptypes.string,
-    createdAt: Proptypes.object,
-    Comment: Proptypes.arrayOf(Proptypes.any),
-    Image: Proptypes.arrayOf(Proptypes.any),
-  }),
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    User: PropTypes.objectOf(PropTypes.any),
+    content: PropTypes.string,
+    createdAt: PropTypes.objectOf(PropTypes.any),
+    Comments: PropTypes.arrayOf(PropTypes.any),
+    Images: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
 };
 
 export default PostCard;

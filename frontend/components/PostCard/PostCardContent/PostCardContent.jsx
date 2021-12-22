@@ -19,8 +19,8 @@ function PostCardContent({ postData }) {
   );
 }
 
-PostCardContent.Proptypes = {
-  postDat: PropTypes.string.isRequired,
+PostCardContent.propTypes = {
+  postData: PropTypes.string.isRequired,
 };
 
 export default PostCardContent;

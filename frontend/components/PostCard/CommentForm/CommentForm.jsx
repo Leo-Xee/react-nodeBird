@@ -1,6 +1,8 @@
-import { Button, Form, Input } from "antd";
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Button, Form, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
+
 import { addCommentRequest } from "../../../redux/actions/post_action";
 
 function CommentForm({ post }) {
@@ -33,12 +35,7 @@ function CommentForm({ post }) {
 
   return (
     <Form onFinish={onSubmit}>
-      <Input.TextArea
-        maxLength={100}
-        rows={4}
-        value={text}
-        onChange={onChangeText}
-      />
+      <Input.TextArea maxLength={100} rows={4} value={text} onChange={onChangeText} />
       <div>
         <Button type="primary" htmlType="submit">
           등록
@@ -47,5 +44,16 @@ function CommentForm({ post }) {
     </Form>
   );
 }
+
+CommentForm.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    User: PropTypes.objectOf(PropTypes.any),
+    content: PropTypes.string,
+    createdAt: PropTypes.objectOf(PropTypes.any),
+    Comments: PropTypes.arrayOf(PropTypes.any),
+    Images: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
+};
 
 export default CommentForm;

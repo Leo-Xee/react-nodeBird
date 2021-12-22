@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
+
 import NavBar from "./NavBar/NavBar";
 import LoginForm from "../LoginForm/LoginForm";
-
 import UserProfile from "../UserProfile/UserProfile";
 
 function AppLayout({ children }) {
