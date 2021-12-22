@@ -1,4 +1,5 @@
 import shortId from "shortid";
+import faker from "faker";
 import produce from "immer";
 import {
   ADD_POST_FAILURE,
@@ -60,6 +61,21 @@ const initialState = {
   addCommentDone: false,
 };
 
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [{ src: faker.image.fashion() }, { src: faker.image.nature() }],
+      Comments: [{ User: { nickname: faker.name.findName() }, content: faker.lorem.sentence() }],
+    })),
+);
+
 const dummyPost = (data) => {
   return {
     id: data.id,
@@ -115,16 +131,19 @@ const postReducer = (state = initialState, action) => {
         draft.addCommentDone = false;
         break;
       case ADD_COMMENT_SUCCESS:
-        const post = draft.mainPosts.find((post) => post.id === action.data.postId);
-        post.Comments.unshift(dummyComment(action.data));
+        {
+          const post = draft.mainPosts.find((post) => post.id === action.data.postId);
+          post.Comments.unshift(dummyComment(action.data));
+        }
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
         draft.addCommentError = action.error;
+        break;
       default:
-        return state;
+        break;
     }
   });
 };

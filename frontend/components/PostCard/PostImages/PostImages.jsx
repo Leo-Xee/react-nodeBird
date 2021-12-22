@@ -10,14 +10,14 @@ function PostImages({ images }) {
     <Swiper modules={[Navigation]} navigation>
       {images.map((image, idx) => (
         <SwiperSlide key={idx}>
-          <img src={image.src} height="400px" />
+          <img src={image.src} alt={image.src} width="100%" />
         </SwiperSlide>
       ))}
     </Swiper>
   );
 }
 
-PostImages.proptypes = {
+PostImages.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
       src: PropTypes.string,
