@@ -13,12 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import PostImages from "./PostImages/PostImages";
 import PostCardContent from "./PostCardContent/PostCardContent";
 import CommentForm from "./CommentForm/CommentForm";
+import FollowButton from "./FollowButton/FollowButton";
 import { removePostRequest } from "../../redux/actions/post_action";
 
 function PostCard({ post }) {
   const [like, setLike] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
-  const id = useSelector((state) => state.user.user?.id);
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const onToggleLike = useCallback(() => {
@@ -49,7 +50,7 @@ function PostCard({ post }) {
             key="ellipsis"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {user && post.User.id === user.id ? (
                   <>
                     <Button>수정</Button>
                     <Button type="danger" onClick={onRemovePost}>
@@ -65,6 +66,7 @@ function PostCard({ post }) {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        extra={user && <FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}

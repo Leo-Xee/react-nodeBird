@@ -25,14 +25,16 @@ export function signupRequest() {
   };
 }
 
-export function followRequest() {
+export function followRequest(data) {
   return {
     type: FOLLOW_REQUEST,
+    data,
   };
 }
 
-export function unfollowRequest() {
+export function unfollowRequest(data) {
   return {
     type: UN_FOLLOW_REQUEST,
+    data,
   };
 }

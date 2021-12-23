@@ -83,6 +83,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case FOLLOW_SUCCESS:
         draft.followLoading = false;
+        draft.user.Followings.push({ id: action.data.id });
         draft.followDone = true;
         break;
       case FOLLOW_FAILURE:
@@ -96,6 +97,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case UN_FOLLOW_SUCCESS:
         draft.unfollowLoading = false;
+        draft.user.Followings = draft.user.Followings.filter((val) => val.id !== action.data.id);
         draft.unfollowDone = true;
         break;
       case UN_FOLLOW_FAILURE:

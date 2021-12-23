@@ -70,6 +70,7 @@ function* follow(action) {
     yield delay(1000);
     yield put({
       type: FOLLOW_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     yield put({
@@ -85,6 +86,7 @@ function* unfollow(action) {
     yield delay(1000);
     yield put({
       type: UN_FOLLOW_SUCCESS,
+      data: action.data,
     });
   } catch (err) {
     yield put({
