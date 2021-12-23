@@ -8,11 +8,28 @@ import {
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
   ADD_POST_TO_ME,
+  LOAD_POSTS_FAILURE,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
   REMOVE_POST_FAILURE,
   REMOVE_POST_OF_ME,
   REMOVE_POST_REQUEST,
   REMOVE_POST_SUCCESS,
 } from "../actions/type";
+
+function* loadPosts(action) {
+  try {
+    console.log("saga loadPosts");
+    yield put({
+      type: LOAD_POSTS_SUCCESS,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_POSTS_FAILURE,
+      error: action.response.err,
+    });
+  }
+}
 
 function* addPost(action) {
   const postId = shortid.generate();
@@ -76,6 +93,10 @@ function* addComment(action) {
   }
 }
 
+function* watchLoadPosts() {
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
@@ -89,5 +110,10 @@ function* watchAddComment() {
 }
 
 export default function* postSaga() {
-  yield all([fork(watchAddPost), fork(watchAddComment), fork(watchRemovePost)]);
+  yield all([
+    fork(watchLoadPosts),
+    fork(watchAddPost),
+    fork(watchAddComment),
+    fork(watchRemovePost),
+  ]);
 }

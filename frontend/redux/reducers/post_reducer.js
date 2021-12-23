@@ -5,6 +5,9 @@ import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
+  LOAD_POSTS_FAILURE,
+  LOAD_POSTS_REQUEST,
+  LOAD_POSTS_SUCCESS,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
@@ -14,42 +17,12 @@ import {
 } from "../actions/type";
 
 const initialState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: "레오",
-      },
-      content: "첫 번째 포스트 #해시태그#리액트#리덕스",
-      Images: [
-        {
-          src: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-        },
-        {
-          src: "https://images.unsplash.com/photo-1601621915196-2621bfb0cd6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80",
-        },
-        {
-          src: "https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            nickname: "다현",
-          },
-          content: "멋있어요",
-        },
-        {
-          User: {
-            nickname: "나연",
-          },
-          content: "좋아해요",
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [],
+  hasMorePosts: true,
+  loadPostsLoading: false,
+  loadPostsError: null,
+  loadPostsDone: false,
   addPostLoading: false,
   addPostError: null,
   addPostDone: false,
@@ -61,8 +34,8 @@ const initialState = {
   addCommentDone: false,
 };
 
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20)
+function loadMainPost(num) {
+  return Array(num)
     .fill()
     .map(() => ({
       id: shortId.generate(),
@@ -71,10 +44,10 @@ initialState.mainPosts = initialState.mainPosts.concat(
         nickname: faker.name.findName(),
       },
       content: faker.lorem.paragraph(),
-      Images: [{ src: faker.image.fashion() }, { src: faker.image.nature() }],
+      Images: [{ src: faker.image.image() }, { src: faker.image.image() }],
       Comments: [{ User: { nickname: faker.name.findName() }, content: faker.lorem.sentence() }],
-    })),
-);
+    }));
+}
 
 const dummyPost = (data) => {
   return {
@@ -97,6 +70,21 @@ const dummyComment = (data) => {
 const postReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsError = null;
+        draft.loadPostsDone = false;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = draft.mainPosts.concat(loadMainPost(10));
+        draft.hasMorePosts = draft.mainPosts.length < 30;
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.err;
+        break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;
         draft.addPostError = null;
