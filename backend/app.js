@@ -1,9 +1,19 @@
 const express = require("express");
-
-const app = express();
+const db = require("./database/models");
 
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/post");
+
+const app = express();
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("DB 연결 성공");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);
