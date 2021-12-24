@@ -1,30 +1,25 @@
-const { DataTypes } = require("sequelize/dist");
-const { sequelize } = require(".");
-
-const Comment = require("./Comment");
-const Hashtag = require("./Hashtag");
-const Image = require("./Image");
-const User = require("./User");
-
-const Post = sequelize.define(
-  "Post",
-  {
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+module.exports = (sequelize, DataTypes) => {
+  const Post = sequelize.define(
+    "Post",
+    {
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
     },
-  },
-  {
-    charset: "utf8mb4",
-    collate: "utf8mb4_general_ci",
-  },
-);
+    {
+      charset: "utf8",
+      collate: "utf8_general_ci",
+    },
+  );
 
-Post.belongsTo(User);
-Post.hasMany(Comment);
-Post.hasMany(Image);
-Post.belongsToMany(Hashtag);
-Post.belongsToMany(User, { through: "Like", as: "Likers" });
-Post.belongsTo(Post, { as: "Retweet" });
-
-module.exports = Post;
+  Post.associate = (db) => {
+    db.Post.belongsTo(db.User);
+    db.Post.belongsToMany(db.Hashtag, { through: "PostHashtag" });
+    db.Post.hasMany(db.Comment);
+    db.Post.hasMany(db.Image);
+    db.Post.belongsToMany(db.User, { through: "Like", as: "Likers" });
+    db.Post.belongsTo(db.Post, { as: "Retweet" });
+  };
+  return Post;
+};

@@ -1,24 +1,21 @@
-const { DataTypes } = require("sequelize/dist");
-const { sequelize } = require(".");
-
-const Post = require("./Post");
-const User = require("./User");
-
-const Comment = sequelize.define(
-  "Comment",
-  {
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+module.exports = (sequelize, DataTypes) => {
+  const Comment = sequelize.define(
+    "Comment",
+    {
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
     },
-  },
-  {
-    charset: "utf8mb4",
-    collate: "utf8mb4_general_ci",
-  },
-);
+    {
+      charset: "utf8mb4",
+      collate: "utf8mb4_general_ci",
+    },
+  );
 
-Comment.belongsTo(User);
-Comment.belongsTo(Post);
-
-module.exports = Comment;
+  Comment.associate = (db) => {
+    db.Comment.belongsTo(db.User);
+    db.Comment.belongsTo(db.Post);
+  };
+  return Comment;
+};
