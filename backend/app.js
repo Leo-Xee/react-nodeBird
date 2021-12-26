@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const db = require("./database/models");
 
 const userRouter = require("./routes/user");
@@ -15,8 +16,18 @@ db.sequelize
     console.log(err);
   });
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: false,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
 
 app.use("/user", userRouter);
 app.use("/post", postRouter);

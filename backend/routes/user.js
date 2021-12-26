@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const User = require("../database/models/User");
+const { User } = require("../database/models");
 
 const router = express.Router();
 
@@ -12,18 +12,18 @@ router.post("/", async (req, res, next) => {
       },
     });
     if (exUser) {
-      res.status(403).json({ success: false, message: "이미 존재하는 이메일입니다." });
+      res.status(403).send("이미 존재하는 이메일입니다.");
       return;
     }
-    const hashedPassword = await bcrypt.hash(req.body.passwod, 10);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     await User.create({
       email: req.body.email,
       nickname: req.body.nickname,
       password: hashedPassword,
     });
-    res.status(200).json({ success: true });
+    res.status(201).send("ok");
   } catch (err) {
-    console.err(err);
+    console.error(err);
     next(err);
   }
 });

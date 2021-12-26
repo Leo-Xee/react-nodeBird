@@ -56,7 +56,7 @@ const userReducer = (state = initialState, action) => {
     switch (action.type) {
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
-        draft.signUpError = false;
+        draft.signUpError = null;
         draft.signUpDone = false;
         break;
       case SIGN_UP_SUCCESS:
@@ -69,7 +69,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case LOG_IN_REQUEST:
         draft.logInLoading = true;
-        draft.logInError = false;
+        draft.logInError = null;
         draft.logInDone = false;
         break;
       case LOG_IN_SUCCESS:
@@ -83,7 +83,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case LOG_OUT_REQUEST:
         draft.logOutLoading = true;
-        draft.logOutError = false;
+        draft.logOutError = null;
         draft.logOutDone = false;
         break;
       case LOG_OUT_SUCCESS:
@@ -97,7 +97,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
-        draft.followError = false;
+        draft.followError = null;
         draft.followDone = false;
         break;
       case FOLLOW_SUCCESS:
@@ -111,7 +111,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case UN_FOLLOW_REQUEST:
         draft.unfollowLoading = true;
-        draft.unfollowError = false;
+        draft.unfollowError = null;
         draft.unfollowDone = false;
         break;
       case UN_FOLLOW_SUCCESS:
