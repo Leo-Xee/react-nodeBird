@@ -19,9 +19,10 @@ export function logoutRequest() {
   };
 }
 
-export function signupRequest() {
+export function signupRequest(data) {
   return {
     type: SIGN_UP_REQUEST,
+    data,
   };
 }
 

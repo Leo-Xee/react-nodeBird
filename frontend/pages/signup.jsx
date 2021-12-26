@@ -3,16 +3,18 @@ import Head from "next/head";
 import { Form, Input, Button, Checkbox } from "antd";
 import styled from "styled-components";
 
+import { useDispatch } from "react-redux";
 import AppLayout from "../components/AppLayout/AppLayout";
 import useInput from "../hooks/useInput";
+import { signupRequest } from "../redux/actions/user_action";
 
 const ErrorMessage = styled.div`
   color: red;
 `;
 
 function signup() {
-  const [{ id, nickname, password }, onChange] = useInput({
-    id: "",
+  const [{ email, nickname, password }, onChange] = useInput({
+    email: "",
     nickname: "",
     password: "",
   });
@@ -20,6 +22,7 @@ function signup() {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [term, setTerm] = useState(false);
   const [isTermError, setIsTermError] = useState(false);
+  const dispatch = useDispatch();
 
   const onChangePasswordCheck = useCallback(
     (e) => {
@@ -43,9 +46,14 @@ function signup() {
       setIsTermError(true);
       return;
     }
+    const body = {
+      email,
+      nickname,
+      password,
+    };
 
-    console.log(id, nickname, password, passwordCheck, term);
-  }, [password, passwordCheck, term]);
+    dispatch(signupRequest(body));
+  }, [email, password, passwordCheck, term]);
 
   return (
     <>
@@ -54,8 +62,8 @@ function signup() {
       </Head>
       <AppLayout>
         <Form onFinish={onSubmit}>
-          <Form.Item label="아이디" name="id">
-            <Input value={id} onChange={onChange} required />
+          <Form.Item label="이메일" name="id">
+            <Input value={email} onChange={onChange} required />
           </Form.Item>
           <Form.Item label="닉네임" name="nickname">
             <Input value={nickname} onChange={onChange} required />

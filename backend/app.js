@@ -15,6 +15,9 @@ db.sequelize
     console.log(err);
   });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/user", userRouter);
 app.use("/post", postRouter);
 
