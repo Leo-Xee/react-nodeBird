@@ -40,16 +40,16 @@ const initialState = {
   loginDate: {},
 };
 
-const dummyUser = (data) => {
-  return {
-    ...data,
-    nickname: "레오",
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
-    Followers: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
-  };
-};
+// const dummyUser = (data) => {
+//   return {
+//     ...data,
+//     nickname: "레오",
+//     id: 1,
+//     Posts: [{ id: 1 }],
+//     Followings: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
+//     Followers: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
+//   };
+// };
 
 const userReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
@@ -75,7 +75,7 @@ const userReducer = (state = initialState, action) => {
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
         draft.logInDone = true;
-        draft.user = dummyUser(action.data);
+        draft.user = action.data;
         break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;

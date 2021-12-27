@@ -18,13 +18,16 @@ import {
   UN_FOLLOW_FAILURE,
 } from "../actions/type";
 
+function logInAPI(data) {
+  return axios.post("/user/login", data);
+}
+
 function* logIn(action) {
   try {
-    console.log("saga logIn");
-    yield delay(1000);
+    const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.log(err);
@@ -51,12 +54,11 @@ function* logOut(action) {
 }
 
 function signUpAPI(data) {
-  return axios.post("http://localhost:5000/user", data);
+  return axios.post("/user", data);
 }
 
 function* signUp(action) {
   try {
-    console.log(action.data);
     const result = yield call(signUpAPI, action.data);
     console.log(result);
     yield put({
