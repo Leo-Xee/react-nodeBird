@@ -59,13 +59,13 @@ function loadMainPost(num) {
 //   };
 // };
 
-const dummyComment = (data) => {
-  return {
-    id: shortId.generate(),
-    User: { id: 1, nickname: "레오" },
-    content: data.content,
-  };
-};
+// const dummyComment = (data) => {
+//   return {
+//     id: shortId.generate(),
+//     User: { id: 1, nickname: "레오" },
+//     content: data.content,
+//   };
+// };
 
 const postReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
@@ -120,8 +120,8 @@ const postReducer = (state = initialState, action) => {
         break;
       case ADD_COMMENT_SUCCESS:
         {
-          const post = draft.mainPosts.find((post) => post.id === action.data.postId);
-          post.Comments.unshift(dummyComment(action.data));
+          const post = draft.mainPosts.find((post) => post.id === action.data.PostId);
+          post.Comments.unshift(action.data);
         }
         draft.addCommentLoading = false;
         draft.addCommentDone = true;

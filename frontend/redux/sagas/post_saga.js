@@ -74,13 +74,16 @@ function* removePost(action) {
   }
 }
 
+function addCommentAPI(data) {
+  return axios.post(`post/${data.postId}/comment`, data);
+}
+
 function* addComment(action) {
   try {
-    console.log("saga addComment");
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
     yield put({
       type: ADD_COMMENT_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({

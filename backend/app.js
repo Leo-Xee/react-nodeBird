@@ -27,7 +27,7 @@ passportConfig();
 app.use(
   cors({
     origin: "http://localhost:3000",
-    credentials: false,
+    credentials: true, // true이면 쿠키도 전달 가능
   }),
 );
 app.use(express.json());
