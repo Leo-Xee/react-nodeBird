@@ -17,11 +17,16 @@ import {
   REMOVE_POST_SUCCESS,
 } from "../actions/type";
 
+function loadPostsAPI() {
+  return axios.get("/posts");
+}
+
 function* loadPosts(action) {
   try {
-    console.log("saga loadPosts");
+    const result = yield call(loadPostsAPI);
     yield put({
       type: LOAD_POSTS_SUCCESS,
+      data: result.data,
     });
   } catch (err) {
     yield put({

@@ -1,5 +1,3 @@
-import shortId from "shortid";
-import faker from "faker";
 import produce from "immer";
 import {
   ADD_POST_FAILURE,
@@ -34,20 +32,20 @@ const initialState = {
   addCommentDone: false,
 };
 
-function loadMainPost(num) {
-  return Array(num)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [{ src: faker.image.image() }, { src: faker.image.image() }],
-      Comments: [{ User: { nickname: faker.name.findName() }, content: faker.lorem.sentence() }],
-    }));
-}
+// function loadMainPost(num) {
+//   return Array(num)
+//     .fill()
+//     .map(() => ({
+//       id: shortId.generate(),
+//       User: {
+//         id: shortId.generate(),
+//         nickname: faker.name.findName(),
+//       },
+//       content: faker.lorem.paragraph(),
+//       Images: [{ src: faker.image.image() }, { src: faker.image.image() }],
+//       Comments: [{ User: { nickname: faker.name.findName() }, content: faker.lorem.sentence() }],
+//     }));
+// }
 
 // const dummyPost = (data) => {
 //   return {
@@ -78,7 +76,7 @@ const postReducer = (state = initialState, action) => {
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        draft.mainPosts = draft.mainPosts.concat(loadMainPost(10));
+        draft.mainPosts = draft.mainPosts.concat(action.data);
         draft.hasMorePosts = draft.mainPosts.length < 30;
         break;
       case LOAD_POSTS_FAILURE:

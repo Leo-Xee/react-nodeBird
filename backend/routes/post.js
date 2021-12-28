@@ -37,7 +37,9 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
     const post = await Post.findOne({
       where: { id: req.params.postId },
     });
-    if (!post) return res.status(403).send("존재하지 않는 게시글입니다.");
+    if (!post) {
+      return res.status(403).send("존재하지 않는 게시글입니다.");
+    }
     const comment = Comment.create({
       content: req.body.content,
       PostId: req.params.postId, // postId
