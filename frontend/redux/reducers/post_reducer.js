@@ -49,15 +49,15 @@ function loadMainPost(num) {
     }));
 }
 
-const dummyPost = (data) => {
-  return {
-    id: data.id,
-    User: { id: 1, nickname: "레오" },
-    content: data.content,
-    Images: [],
-    Comments: [],
-  };
-};
+// const dummyPost = (data) => {
+//   return {
+//     id: data.id,
+//     User: { id: 1, nickname: "레오" },
+//     content: data.content,
+//     Images: [],
+//     Comments: [],
+//   };
+// };
 
 const dummyComment = (data) => {
   return {
@@ -93,7 +93,7 @@ const postReducer = (state = initialState, action) => {
       case ADD_POST_SUCCESS:
         draft.addPostLoading = false;
         draft.addPostDone = true;
-        draft.mainPosts.unshift(dummyPost(action.data));
+        draft.mainPosts.unshift(action.data);
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
