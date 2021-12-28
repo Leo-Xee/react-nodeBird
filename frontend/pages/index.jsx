@@ -5,6 +5,7 @@ import AppLayout from "../components/AppLayout/AppLayout";
 import PostForm from "../components/PostForm/PostForm";
 import PostCard from "../components/PostCard/PostCard";
 import { loadPostsRequest } from "../redux/actions/post_action";
+import { loadUserInfoRequest } from "../redux/actions/user_action";
 
 function Home() {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function Home() {
   const { logInDone } = useSelector((state) => state.user);
 
   useEffect(() => {
+    dispatch(loadUserInfoRequest());
     dispatch(loadPostsRequest());
   }, []);
 

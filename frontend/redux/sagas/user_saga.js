@@ -16,7 +16,30 @@ import {
   UN_FOLLOW_REQUEST,
   UN_FOLLOW_SUCCESS,
   UN_FOLLOW_FAILURE,
+  LOAD_USER_INFO_SUCCESS,
+  LOAD_USER_INFO_FAILURE,
+  LOAD_USER_INFO_REQUEST,
 } from "../actions/type";
+
+function loadUserInfoAPI() {
+  return axios.get("/user");
+}
+
+function* loadUserInfo() {
+  try {
+    const result = yield call(loadUserInfoAPI);
+    yield put({
+      type: LOAD_USER_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: LOAD_USER_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 
 function logInAPI(data) {
   return axios.post("/user/login", data);
@@ -57,7 +80,7 @@ function* logOut(action) {
 }
 
 function signUpAPI(data) {
-  return axios.post("/user", data);
+  return axios.post("/user/signup", data);
 }
 
 function* signUp(action) {
@@ -107,6 +130,10 @@ function* unfollow(action) {
   }
 }
 
+function* watchLoadUserInfo() {
+  yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -130,6 +157,7 @@ function* watchUnfollow() {
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
+    fork(watchLoadUserInfo),
     fork(watchLogOut),
     fork(watchSignUp),
     fork(watchFollow),

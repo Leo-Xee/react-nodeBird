@@ -1,5 +1,8 @@
 import produce from "immer";
 import {
+  LOAD_USER_INFO_REQUEST,
+  LOAD_USER_INFO_SUCCESS,
+  LOAD_USER_INFO_FAILURE,
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
@@ -20,6 +23,9 @@ import {
 } from "../actions/type";
 
 const initialState = {
+  loadUserInfoLoading: false,
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
@@ -54,6 +60,20 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_USER_INFO_REQUEST:
+        draft.loadUserInfoLoading = true;
+        draft.loadUserInfoError = null;
+        draft.loadUserInfoDone = false;
+        break;
+      case LOAD_USER_INFO_SUCCESS:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoDone = true;
+        draft.user = action.data;
+        break;
+      case LOAD_USER_INFO_FAILURE:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoError = action.error;
+        break;
       case SIGN_UP_REQUEST:
         draft.signUpLoading = true;
         draft.signUpError = null;

@@ -1,17 +1,31 @@
 const express = require("express");
 const { Post, Comment } = require("../database/models");
+const User = require("../database/models/User");
 const { isLoggedIn } = require("./middleware");
 
 const router = express.Router();
 
 router.post("/", isLoggedIn, async (req, res, next) => {
   try {
-    console.log(req.body);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
-    res.status(201).json(post);
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+        },
+        {
+          model: User,
+        },
+      ],
+    });
+    res.status(201).json(fullPost);
   } catch (err) {
     console.error(err);
     next(err);

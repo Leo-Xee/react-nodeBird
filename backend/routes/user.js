@@ -6,7 +6,43 @@ const { isLoggedIn, isNotLoggedIn } = require("./middleware");
 
 const router = express.Router();
 
-router.post("/", isNotLoggedIn, async (req, res, next) => {
+// 로그인 상태에서 새로고침 시에 로그인 정보 유지
+router.get("/", async (req, res, next) => {
+  try {
+    if (req.user) {
+      const userWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ["id"],
+          },
+          {
+            model: User,
+            as: "Followings",
+            attributes: ["id"],
+          },
+          {
+            model: User,
+            as: "Followers",
+            attributes: ["id"],
+          },
+        ],
+      });
+      res.status(200).json(userWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.post("/signup", isNotLoggedIn, async (req, res, next) => {
   try {
     const exUser = await User.findOne({
       where: {
@@ -50,9 +86,9 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
           exclude: ["password"],
         },
         include: [
-          { model: Post },
-          { model: User, as: "Followings" },
-          { model: User, as: "Followers" },
+          { model: Post, attributes: ["id"] },
+          { model: User, as: "Followings", attributes: ["id"] },
+          { model: User, as: "Followers", attributes: ["id"] },
         ],
       });
       return res.status(200).json(userWithoutPassword);

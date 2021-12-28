@@ -1,5 +1,6 @@
 import {
   FOLLOW_REQUEST,
+  LOAD_USER_INFO_REQUEST,
   LOG_IN_REQUEST,
   LOG_OUT_REQUEST,
   SIGN_UP_REQUEST,
@@ -37,5 +38,11 @@ export function unfollowRequest(data) {
   return {
     type: UN_FOLLOW_REQUEST,
     data,
+  };
+}
+
+export function loadUserInfoRequest() {
+  return {
+    type: LOAD_USER_INFO_REQUEST,
   };
 }
