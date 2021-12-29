@@ -25,6 +25,11 @@ router.post("/", isLoggedIn, async (req, res, next) => {
           model: User,
           attributes: ["id", "nickname"],
         },
+        {
+          model: User,
+          as: "Likers",
+          attributes: ["id"],
+        },
       ],
     });
     res.status(201).json(fullPost);
@@ -58,6 +63,30 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
       ],
     });
     res.status(201).json(fullComment);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.patch("/:postId/like", async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) return res.status(403).send("게시글이 존재하지 않습니다.");
+    await post.addLikers(req.user.id);
+    res.status(201).json({ PostId: post.id, UserId: req.user.id });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.delete("/:postId/like", async (req, res, next) => {
+  try {
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) return res.status(403).send("게시글이 존재하지 않습니다.");
+    await post.removeLikers(req.user.id);
+    res.status(201).json({ PostId: post.id, UserId: req.user.id });
   } catch (err) {
     console.error(err);
     next(err);

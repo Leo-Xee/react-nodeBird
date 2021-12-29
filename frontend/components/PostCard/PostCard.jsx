@@ -14,17 +14,26 @@ import PostImages from "./PostImages/PostImages";
 import PostCardContent from "./PostCardContent/PostCardContent";
 import CommentForm from "./CommentForm/CommentForm";
 import FollowButton from "./FollowButton/FollowButton";
-import { removePostRequest } from "../../redux/actions/post_action";
+import {
+  likePostRequest,
+  removePostRequest,
+  unlikePostRequest,
+} from "../../redux/actions/post_action";
 
 function PostCard({ post }) {
-  const [like, setLike] = useState(false);
   const [commentOpened, setCommentOpened] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
-  const onToggleLike = useCallback(() => {
-    setLike((prev) => !prev);
-  }, []);
+  const onLike = useCallback(() => {
+    if (!user) return alert("로그인이 필요합니다.");
+    dispatch(likePostRequest({ postId: post.id }));
+  }, [user]);
+
+  const onUnlike = useCallback(() => {
+    if (!user) return alert("로그인이 필요합니다.");
+    dispatch(unlikePostRequest({ postId: post.id }));
+  }, [user]);
 
   const onToggleComment = useCallback(() => {
     setCommentOpened((prev) => !prev);
@@ -34,6 +43,7 @@ function PostCard({ post }) {
     dispatch(removePostRequest({ postId: post.id }));
   }, []);
 
+  const like = post.Likers.find((v) => v.id === user.id);
   return (
     <>
       <Card
@@ -41,9 +51,9 @@ function PostCard({ post }) {
         actions={[
           <RetweetOutlined key="tweet" />,
           like ? (
-            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
+            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onLike} />
           ),
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
@@ -105,6 +115,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
+    Likers: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,
 };
 
