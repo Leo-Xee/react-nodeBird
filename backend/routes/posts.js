@@ -1,5 +1,5 @@
 const express = require("express");
-const { Post, User, Image } = require("../database/models");
+const { Post, User, Image, Comment } = require("../database/models");
 
 const router = express.Router();
 
@@ -8,7 +8,17 @@ router.get("/", async (req, res, next) => {
     const posts = await Post.findAll({
       limit: 10,
       order: [["createdAt", "DESC"]],
-      include: [{ model: User }, { model: Image }],
+      include: [
+        { model: User, attributes: ["id", "nickname"] },
+        { model: Image },
+        {
+          model: Comment,
+          include: {
+            model: User,
+            attributes: ["id", "nickname"],
+          },
+        },
+      ],
     });
     res.status(200).json(posts);
   } catch (err) {

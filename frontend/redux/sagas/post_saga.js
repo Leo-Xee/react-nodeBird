@@ -52,6 +52,7 @@ function* addPost(action) {
       data: result.data.id,
     });
   } catch (err) {
+    console.log(err);
     yield put({
       type: ADD_POST_FAILURE,
       error: action.response.err,
@@ -80,7 +81,7 @@ function* removePost(action) {
 }
 
 function addCommentAPI(data) {
-  return axios.post(`post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
@@ -91,6 +92,7 @@ function* addComment(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
       error: action.response.err,

@@ -7,7 +7,7 @@ import { addCommentRequest } from "../../../redux/actions/post_action";
 
 function CommentForm({ post }) {
   const [text, setText] = useState("");
-  const { user } = useSelector((state) => state.user);
+  const id = useSelector((state) => state.user.user?.id);
   const { addCommentDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
 
@@ -22,11 +22,9 @@ function CommentForm({ post }) {
   };
 
   const onSubmit = () => {
-    console.log(post.id, user.id, text);
-
     const body = {
       postId: post.id,
-      userId: user.id,
+      userId: id,
       content: text,
     };
 
@@ -50,7 +48,7 @@ CommentForm.propTypes = {
     id: PropTypes.number,
     User: PropTypes.objectOf(PropTypes.any),
     content: PropTypes.string,
-    createdAt: PropTypes.objectOf(PropTypes.any),
+    createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
   }).isRequired,

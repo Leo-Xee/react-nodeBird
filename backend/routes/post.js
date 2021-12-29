@@ -1,10 +1,10 @@
 const express = require("express");
-const { Post, Comment } = require("../database/models");
-const User = require("../database/models/User");
+const { Post, Comment, Image, User } = require("../database/models");
 const { isLoggedIn } = require("./middleware");
 
 const router = express.Router();
 
+// addPost | req: content
 router.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.create({
@@ -19,9 +19,11 @@ router.post("/", isLoggedIn, async (req, res, next) => {
         },
         {
           model: Comment,
+          include: [{ model: User, attributes: ["id", "nickname"] }],
         },
         {
           model: User,
+          attributes: ["id", "nickname"],
         },
       ],
     });
@@ -32,6 +34,7 @@ router.post("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
+// addComment
 router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
@@ -40,12 +43,21 @@ router.post("/:postId/comment", isLoggedIn, async (req, res, next) => {
     if (!post) {
       return res.status(403).send("존재하지 않는 게시글입니다.");
     }
-    const comment = Comment.create({
+    const comment = await Comment.create({
       content: req.body.content,
-      PostId: req.params.postId, // postId
+      PostId: parseInt(req.params.postId, 10), // postId
       UserId: req.user.id,
     });
-    res.status(201).json(comment);
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    });
+    res.status(201).json(fullComment);
   } catch (err) {
     console.error(err);
     next(err);

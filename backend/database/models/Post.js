@@ -8,6 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      modelName: "Post",
+      tableName: "posts",
       charset: "utf8",
       collate: "utf8_general_ci",
     },

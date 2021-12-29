@@ -10,7 +10,7 @@ import { loadUserInfoRequest } from "../redux/actions/user_action";
 function Home() {
   const dispatch = useDispatch();
   const { hasMorePosts, mainPosts, loadPostLoading } = useSelector((state) => state.post);
-  const { logInDone } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch(loadUserInfoRequest());
@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <AppLayout>
-      {logInDone && <PostForm />}
+      {user && <PostForm />}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
