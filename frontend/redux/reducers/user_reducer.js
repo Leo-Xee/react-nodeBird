@@ -20,6 +20,9 @@ import {
   UN_FOLLOW_FAILURE,
   ADD_POST_TO_ME,
   REMOVE_POST_OF_ME,
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
 } from "../actions/type";
 
 const initialState = {
@@ -41,6 +44,9 @@ const initialState = {
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  changeNicknameLoading: false,
+  changeNicknameDone: false,
+  changeNicknameError: null,
   user: null,
   signUpData: {},
   loginDate: {},
@@ -147,7 +153,21 @@ const userReducer = (state = initialState, action) => {
         draft.user.Posts.unshift({ id: action.data.id });
         break;
       case REMOVE_POST_OF_ME:
-        draft.user.Posts = draft.user.Posts.filter((post) => post.id !== action.data.postId);
+        draft.user.Posts = draft.user.Posts.filter((post) => post.id !== action.data.PostId);
+        break;
+      case CHANGE_NICKNAME_REQUEST:
+        draft.changeNicknameLoading = true;
+        draft.changeNicknameError = null;
+        draft.changeNicknameDone = false;
+        break;
+      case CHANGE_NICKNAME_SUCCESS:
+        draft.changeNicknameLoading = false;
+        draft.changeNicknameDone = true;
+        draft.user.nickname = action.data.nickname;
+        break;
+      case CHANGE_NICKNAME_FAILURE:
+        draft.changeNicknameLoading = false;
+        draft.changeNicknameError = action.error;
         break;
       default:
         return state;

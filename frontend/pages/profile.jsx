@@ -1,13 +1,22 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import Router from "next/router";
 import AppLayout from "../components/AppLayout/AppLayout";
 
 import NicknameEditForm from "../components/NicknameEditForm/NicknameEditForm";
 import FollowList from "../components/common/FollowList/FollowList";
 
-const dummy = [{ nickname: "나연" }, { nickname: "사나" }, { nickname: "다현" }];
-
 function profile() {
+  const user = useSelector((state) => state.user?.user);
+
+  useEffect(() => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      Router.push("/");
+    }
+  }, [user]);
+
   return (
     <>
       <Head>
@@ -15,8 +24,8 @@ function profile() {
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList header="팔로잉 목록" data={dummy} />
-        <FollowList header="팔로워 목록" data={dummy} />
+        <FollowList header="팔로잉 목록" data={user.Followings} />
+        <FollowList header="팔로워 목록" data={user.Followers} />
       </AppLayout>
     </>
   );

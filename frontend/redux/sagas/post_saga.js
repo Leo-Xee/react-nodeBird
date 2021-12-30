@@ -1,4 +1,4 @@
-import { all, delay, put, takeLatest, fork, call } from "redux-saga/effects";
+import { all, put, takeLatest, fork, call } from "redux-saga/effects";
 import axios from "axios";
 import {
   ADD_COMMENT_FAILURE,
@@ -66,19 +66,23 @@ function* addPost(action) {
   }
 }
 
+function removePostAPI(data) {
+  return axios.delete(`/post/${data.postId}`);
+}
+
 function* removePost(action) {
   try {
-    console.log("saga removePost");
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
     yield put({
       type: REMOVE_POST_OF_ME,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
       error: action.response.err,

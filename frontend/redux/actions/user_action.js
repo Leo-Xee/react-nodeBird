@@ -1,4 +1,5 @@
 import {
+  CHANGE_NICKNAME_REQUEST,
   FOLLOW_REQUEST,
   LOAD_USER_INFO_REQUEST,
   LOG_IN_REQUEST,
@@ -44,5 +45,12 @@ export function unfollowRequest(data) {
 export function loadUserInfoRequest() {
   return {
     type: LOAD_USER_INFO_REQUEST,
+  };
+}
+
+export function changeNicknameRequest(data) {
+  return {
+    type: CHANGE_NICKNAME_REQUEST,
+    data,
   };
 }

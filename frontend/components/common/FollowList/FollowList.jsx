@@ -29,7 +29,7 @@ function FollowList({ header, data }) {
 
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.arrayof(PropTypes.object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default FollowList;
