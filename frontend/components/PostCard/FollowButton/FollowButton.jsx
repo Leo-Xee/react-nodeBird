@@ -7,6 +7,7 @@ import { followRequest, unfollowRequest } from "../../../redux/actions/user_acti
 function FollowButton({ post }) {
   const dispatch = useDispatch();
   const { user, followLoading, unfollowLoading } = useSelector((state) => state.user);
+  const isMe = user.id === post.User.id;
   const isFollowing = user?.Followings.find((val) => val.id === post.User.id);
 
   const onFollow = useCallback(() => {
@@ -21,6 +22,7 @@ function FollowButton({ post }) {
     }
   }, [isFollowing]);
 
+  if (isMe) return null;
   return (
     <Button loading={followLoading || unfollowLoading} onClick={onFollow}>
       {isFollowing ? "UnFollow" : "Follow"}

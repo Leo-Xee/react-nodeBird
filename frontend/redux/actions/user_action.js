@@ -1,9 +1,12 @@
 import {
   CHANGE_NICKNAME_REQUEST,
   FOLLOW_REQUEST,
+  LOAD_FOLLOWERS_REQUEST,
+  LOAD_FOLLOWINGS_REQUEST,
   LOAD_USER_INFO_REQUEST,
   LOG_IN_REQUEST,
   LOG_OUT_REQUEST,
+  REMOVE_FOLLOWER_REQUEST,
   SIGN_UP_REQUEST,
   UN_FOLLOW_REQUEST,
 } from "./type";
@@ -51,6 +54,25 @@ export function loadUserInfoRequest() {
 export function changeNicknameRequest(data) {
   return {
     type: CHANGE_NICKNAME_REQUEST,
+    data,
+  };
+}
+
+export function loadFollowingsRequest() {
+  return {
+    type: LOAD_FOLLOWINGS_REQUEST,
+  };
+}
+
+export function loadFollowersRequest() {
+  return {
+    type: LOAD_FOLLOWERS_REQUEST,
+  };
+}
+
+export function removeFollowerRequest(data) {
+  return {
+    type: REMOVE_FOLLOWER_REQUEST,
     data,
   };
 }
