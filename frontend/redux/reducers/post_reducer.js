@@ -18,6 +18,9 @@ import {
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
   UNLIKE_POST_FAILURE,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_FAILURE,
 } from "../actions/type";
 
 const initialState = {
@@ -42,6 +45,9 @@ const initialState = {
   unlikePostLoading: false,
   unlikePostError: null,
   unlikePostDone: false,
+  uploadImagesLoading: false,
+  uploadImagesError: null,
+  uploadImagesDone: false,
 };
 
 // function loadMainPost(num) {
@@ -170,6 +176,19 @@ const postReducer = (state = initialState, action) => {
       case UNLIKE_POST_FAILURE:
         draft.unlikePostLoading = false;
         draft.unlikePostError = action.err;
+        break;
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesError = null;
+        draft.uploadImagesDone = false;
+        break;
+      case UPLOAD_IMAGES_SUCCESS:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.err;
         break;
       default:
         break;

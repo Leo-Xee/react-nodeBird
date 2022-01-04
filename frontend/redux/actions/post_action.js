@@ -5,6 +5,7 @@ import {
   LOAD_POSTS_REQUEST,
   REMOVE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
+  UPLOAD_IMAGES_REQUEST,
 } from "./type";
 
 export function loadPostsRequest() {
@@ -44,6 +45,13 @@ export function likePostRequest(data) {
 export function unlikePostRequest(data) {
   return {
     type: UNLIKE_POST_REQUEST,
+    data,
+  };
+}
+
+export function uploadImagesRequest(data) {
+  return {
+    type: UPLOAD_IMAGES_REQUEST,
     data,
   };
 }

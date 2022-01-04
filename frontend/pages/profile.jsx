@@ -9,7 +9,7 @@ import FollowList from "../components/common/FollowList/FollowList";
 import { loadFollowersRequest, loadFollowingsRequest } from "../redux/actions/user_action";
 
 function profile() {
-  const user = useSelector((state) => state.user?.user);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function profile() {
       alert("로그인이 필요합니다.");
       Router.push("/");
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     dispatch(loadFollowingsRequest());

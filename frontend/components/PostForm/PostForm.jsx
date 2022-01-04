@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPostRequest } from "../../redux/actions/post_action";
+import { addPostRequest, uploadImagesRequest } from "../../redux/actions/post_action";
 
 function PostForm() {
   const { addPostLoading, addPostDone } = useSelector((state) => state.post);
@@ -23,12 +23,21 @@ function PostForm() {
     imageInput.current.click();
   }, [imageInput.current]);
 
+  const onChangeImages = useCallback((e) => {
+    console.log("images", e.target.files);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append("image", f);
+    });
+    dispatch(uploadImagesRequest(imageFormData));
+  });
+
   const onSubmit = () => {
     dispatch(addPostRequest({ content: text }));
   };
 
   return (
-    <Form onFinish={onSubmit}>
+    <Form encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea
         value={text}
         maxLength={100}
@@ -42,7 +51,7 @@ function PostForm() {
           justifyContent: "space-between",
         }}
       >
-        <input type="file" multiple hidden ref={imageInput} />
+        <input type="file" onChange={onChangeImages} multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <Button type="primary" htmlType="submit" loading={addPostLoading}>
           트윗
