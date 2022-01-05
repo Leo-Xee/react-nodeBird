@@ -3,6 +3,7 @@ import {
   ADD_POST_REQUEST,
   LIKE_POST_REQUEST,
   LOAD_POSTS_REQUEST,
+  REMOVE_IMAGE,
   REMOVE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
   UPLOAD_IMAGES_REQUEST,
@@ -52,6 +53,13 @@ export function unlikePostRequest(data) {
 export function uploadImagesRequest(data) {
   return {
     type: UPLOAD_IMAGES_REQUEST,
+    data,
+  };
+}
+
+export function removeImage(data) {
+  return {
+    type: REMOVE_IMAGE,
     data,
   };
 }

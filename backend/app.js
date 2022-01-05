@@ -4,6 +4,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
+const path = require("path");
 
 const morgan = require("morgan");
 const db = require("./database/models");
@@ -33,6 +34,7 @@ app.use(
     credentials: true, // true이면 쿠키도 전달 가능
   }),
 );
+app.use("/", express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

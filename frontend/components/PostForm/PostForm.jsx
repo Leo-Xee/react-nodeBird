@@ -1,10 +1,10 @@
 import { Button, Form, Input } from "antd";
 import React, { useCallback, useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addPostRequest, uploadImagesRequest } from "../../redux/actions/post_action";
+import { addPostRequest, removeImage, uploadImagesRequest } from "../../redux/actions/post_action";
 
 function PostForm() {
-  const { addPostLoading, addPostDone } = useSelector((state) => state.post);
+  const { addPostLoading, addPostDone, imagePaths } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const [text, setText] = useState("");
   const imageInput = useRef();
@@ -32,6 +32,13 @@ function PostForm() {
     dispatch(uploadImagesRequest(imageFormData));
   });
 
+  const onRemoveImage = useCallback(
+    (idx) => () => {
+      dispatch(removeImage(idx));
+    },
+    [],
+  );
+
   const onSubmit = () => {
     dispatch(addPostRequest({ content: text }));
   };
@@ -56,6 +63,20 @@ function PostForm() {
         <Button type="primary" htmlType="submit" loading={addPostLoading}>
           트윗
         </Button>
+      </div>
+      <div style={{ display: "flex" }}>
+        {imagePaths.map((v, idx) => (
+          <div key={v}>
+            <img
+              src={`http://localhost:5000/${v}`}
+              alt={v}
+              style={{ width: "100px", height: "100px" }}
+            />
+            <div>
+              <Button onClick={onRemoveImage(idx)}>제거</Button>
+            </div>
+          </div>
+        ))}
       </div>
       <div />
     </Form>

@@ -21,6 +21,7 @@ import {
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_FAILURE,
+  REMOVE_IMAGE,
 } from "../actions/type";
 
 const initialState = {
@@ -185,10 +186,14 @@ const postReducer = (state = initialState, action) => {
       case UPLOAD_IMAGES_SUCCESS:
         draft.uploadImagesLoading = false;
         draft.uploadImagesDone = true;
+        draft.imagePaths = action.data;
         break;
       case UPLOAD_IMAGES_FAILURE:
         draft.uploadImagesLoading = false;
         draft.uploadImagesError = action.err;
+        break;
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
       default:
         break;
