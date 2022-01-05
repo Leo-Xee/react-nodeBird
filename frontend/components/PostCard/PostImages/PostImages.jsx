@@ -10,7 +10,7 @@ function PostImages({ images }) {
     <Swiper modules={[Navigation]} navigation>
       {images.map((image, idx) => (
         <SwiperSlide key={idx}>
-          <img src={image.src} alt={image.src} width="100%" />
+          <img src={`http://localhost:5000/${image.src}`} alt={image.src} width="100%" />
         </SwiperSlide>
       ))}
     </Swiper>

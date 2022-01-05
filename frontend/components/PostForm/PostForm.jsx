@@ -39,9 +39,17 @@ function PostForm() {
     [],
   );
 
-  const onSubmit = () => {
-    dispatch(addPostRequest({ content: text }));
-  };
+  const onSubmit = useCallback(() => {
+    if (!text || !text.trim()) {
+      return alert("게시글을 작성하세요.");
+    }
+    const formData = new FormData();
+    imagePaths.forEach((v) => {
+      formData.append("image", v);
+    });
+    formData.append("content", text);
+    dispatch(addPostRequest(formData));
+  }, [text, imagePaths]);
 
   return (
     <Form encType="multipart/form-data" onFinish={onSubmit}>

@@ -14,13 +14,37 @@ try {
   fs.mkdirSync("uploads");
 }
 
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads");
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext);
+      const filename = `${basename}-${new Date().getTime()}${ext}`;
+      done(null, filename);
+    },
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 }, // 5MB
+});
+
 // addPost | req: content
-router.post("/", isLoggedIn, async (req, res, next) => {
+router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(req.body.image.map((img) => Image.create({ src: img })));
+        await post.addImages(images);
+      } else {
+        const image = await Image.create({ src: req.body.image });
+        await post.addImage(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
@@ -114,21 +138,6 @@ router.delete("/:postId", isLoggedIn, async (req, res, next) => {
     console.error(err);
     next(err);
   }
-});
-
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads");
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      const basename = path.basename(file.originalname, ext);
-      const filename = `${basename}-${new Date().getTime()}${ext}`;
-      done(null, filename);
-    },
-  }),
-  limits: { fileSize: 50 * 1024 * 1024 }, // 5MB
 });
 
 router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
