@@ -1,4 +1,4 @@
-import { all, put, takeLatest, fork, call } from "redux-saga/effects";
+import { throttle, all, put, takeLatest, fork, call } from "redux-saga/effects";
 import axios from "axios";
 import {
   ADD_COMMENT_FAILURE,
@@ -29,18 +29,19 @@ import {
   UPLOAD_IMAGES_SUCCESS,
 } from "../actions/type";
 
-function loadPostsAPI() {
-  return axios.get("/posts");
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
-function* loadPosts() {
+function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data,
@@ -196,7 +197,7 @@ function* retweet(action) {
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
+  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
 
 function* watchAddPost() {

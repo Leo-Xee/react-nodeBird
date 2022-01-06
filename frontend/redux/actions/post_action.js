@@ -10,9 +10,10 @@ import {
   UPLOAD_IMAGES_REQUEST,
 } from "./type";
 
-export function loadPostsRequest() {
+export function loadPostsRequest(data) {
   return {
     type: LOAD_POSTS_REQUEST,
+    data,
   };
 }
 
