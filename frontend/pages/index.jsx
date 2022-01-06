@@ -9,8 +9,16 @@ import { loadUserInfoRequest } from "../redux/actions/user_action";
 
 function Home() {
   const dispatch = useDispatch();
-  const { hasMorePosts, mainPosts, loadPostLoading } = useSelector((state) => state.post);
+  const { hasMorePosts, mainPosts, loadPostLoading, retweetError } = useSelector(
+    (state) => state.post,
+  );
   const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   useEffect(() => {
     dispatch(loadUserInfoRequest());

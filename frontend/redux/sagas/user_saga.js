@@ -77,7 +77,7 @@ function logOutAPI() {
   return axios.post("/user/logout");
 }
 
-function* logOut(action) {
+function* logOut() {
   try {
     yield call(logOutAPI);
     yield put({
@@ -86,7 +86,7 @@ function* logOut(action) {
   } catch (err) {
     yield put({
       type: LOG_OUT_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -125,7 +125,7 @@ function* follow(action) {
     console.error(err);
     yield put({
       type: FOLLOW_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -145,7 +145,7 @@ function* unfollow(action) {
     console.error(err);
     yield put({
       type: UN_FOLLOW_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -165,7 +165,7 @@ function* removeFollower(action) {
     console.error(err);
     yield put({
       type: REMOVE_FOLLOWER_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -173,7 +173,7 @@ function loadFollowingsAPI() {
   return axios.get("/user/followings");
 }
 
-function* loadFollowings(action) {
+function* loadFollowings() {
   try {
     const result = yield call(loadFollowingsAPI);
     yield put({
@@ -184,7 +184,7 @@ function* loadFollowings(action) {
     console.error(err);
     yield put({
       type: LOAD_FOLLOWINGS_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -193,7 +193,7 @@ function loadFollowersAPI() {
   return axios.get("/user/followers");
 }
 
-function* loadFollowers(action) {
+function* loadFollowers() {
   try {
     const result = yield call(loadFollowersAPI);
     yield put({
@@ -204,7 +204,7 @@ function* loadFollowers(action) {
     console.error(err);
     yield put({
       type: LOAD_FOLLOWERS_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -223,7 +223,7 @@ function* changeNickname(action) {
   } catch (err) {
     yield put({
       type: CHANGE_NICKNAME_FAILURE,
-      error: action.response.data,
+      error: err.response.data,
     });
   }
 }

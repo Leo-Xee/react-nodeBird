@@ -5,6 +5,7 @@ import {
   LOAD_POSTS_REQUEST,
   REMOVE_IMAGE,
   REMOVE_POST_REQUEST,
+  RETWEET_REQUEST,
   UNLIKE_POST_REQUEST,
   UPLOAD_IMAGES_REQUEST,
 } from "./type";
@@ -60,6 +61,13 @@ export function uploadImagesRequest(data) {
 export function removeImage(data) {
   return {
     type: REMOVE_IMAGE,
+    data,
+  };
+}
+
+export function retweetRequest(data) {
+  return {
+    type: RETWEET_REQUEST,
     data,
   };
 }
