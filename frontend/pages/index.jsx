@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 
+import axios from "axios";
 import AppLayout from "../components/AppLayout/AppLayout";
 import PostForm from "../components/PostForm/PostForm";
 import PostCard from "../components/PostCard/PostCard";
@@ -48,8 +49,13 @@ function Home() {
   );
 }
 
-// 서버에서 Pre-rendering 하는 부분
-export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+// 프론트 서버에서 Pre-rendering 하는 부분
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+  const cookie = req ? req.headers.cookie : "";
+  axios.defaults.headers.Cookie = "";
+  if (req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
   store.dispatch(loadUserInfoRequest());
   store.dispatch(loadPostsRequest());
   store.dispatch(END);

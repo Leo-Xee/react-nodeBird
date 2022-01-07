@@ -117,7 +117,7 @@ router.patch("/:postId/like", isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({ where: { id: req.params.postId } });
     if (!post) return res.status(403).send("게시글이 존재하지 않습니다.");
-    await post.addLikers(req.user.id);
+    // await post.addLikers(req.user.id);
     res.status(201).json({ PostId: post.id, UserId: req.user.id });
   } catch (err) {
     console.error(err);
@@ -151,7 +151,6 @@ router.delete("/:postId", isLoggedIn, async (req, res, next) => {
 });
 
 router.post("/images", isLoggedIn, upload.array("image"), (req, res) => {
-  console.log(req.files);
   res.json(req.files.map((v) => v.filename));
 });
 
