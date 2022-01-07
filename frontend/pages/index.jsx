@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { END } from "redux-saga";
 
 import AppLayout from "../components/AppLayout/AppLayout";
 import PostForm from "../components/PostForm/PostForm";
 import PostCard from "../components/PostCard/PostCard";
 import { loadPostsRequest } from "../redux/actions/post_action";
 import { loadUserInfoRequest } from "../redux/actions/user_action";
+import wrapper from "../redux/store/configureStore";
 
 function Home() {
   const dispatch = useDispatch();
@@ -21,17 +23,11 @@ function Home() {
   }, [retweetError]);
 
   useEffect(() => {
-    dispatch(loadUserInfoRequest());
-    dispatch(loadPostsRequest());
-  }, []);
-
-  useEffect(() => {
     function onScroll() {
       const { clientHeight, scrollHeight } = document.documentElement;
       if (hasMorePosts && !loadPostLoading) {
         if (window.scrollY + clientHeight > scrollHeight - 500) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
-          console.log(lastId);
           dispatch(loadPostsRequest(lastId));
         }
       }
@@ -51,5 +47,13 @@ function Home() {
     </AppLayout>
   );
 }
+
+// 서버에서 Pre-rendering 하는 부분
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+  store.dispatch(loadUserInfoRequest());
+  store.dispatch(loadPostsRequest());
+  store.dispatch(END);
+  await store.sagaTask.toPromise();
+});
 
 export default Home;
