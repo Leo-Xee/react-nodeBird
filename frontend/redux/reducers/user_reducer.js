@@ -1,5 +1,8 @@
 import produce from "immer";
 import {
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
   LOAD_USER_INFO_REQUEST,
   LOAD_USER_INFO_SUCCESS,
   LOAD_USER_INFO_FAILURE,
@@ -35,6 +38,9 @@ import {
 } from "../actions/type";
 
 const initialState = {
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   loadUserInfoLoading: false,
   loadUserInfoDone: false,
   loadUserInfoError: null,
@@ -65,9 +71,8 @@ const initialState = {
   loadFollowersLoading: false,
   loadFollowersDone: false,
   loadFollowersError: null,
-  user: null,
-  signUpData: {},
-  loginDate: {},
+  userInfo: null, // 검색할 특정 사용자의 정보
+  myInfo: null, // 로그인한 사용자의 정보
 };
 
 // const dummyUser = (data) => {
@@ -84,6 +89,20 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoError = null;
+        draft.loadMyInfoDone = false;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoDone = true;
+        draft.myInfo = action.data;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = action.error;
+        break;
       case LOAD_USER_INFO_REQUEST:
         draft.loadUserInfoLoading = true;
         draft.loadUserInfoError = null;
@@ -92,7 +111,7 @@ const userReducer = (state = initialState, action) => {
       case LOAD_USER_INFO_SUCCESS:
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
-        draft.user = action.data;
+        draft.userInfo = action.data;
         break;
       case LOAD_USER_INFO_FAILURE:
         draft.loadUserInfoLoading = false;
@@ -119,7 +138,7 @@ const userReducer = (state = initialState, action) => {
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
         draft.logInDone = true;
-        draft.user = action.data;
+        draft.myInfo = action.data;
         break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;
@@ -133,7 +152,7 @@ const userReducer = (state = initialState, action) => {
       case LOG_OUT_SUCCESS:
         draft.logOutLoading = false;
         draft.logOutDone = true;
-        draft.user = null;
+        draft.myInfo = null;
         break;
       case LOG_OUT_FAILURE:
         draft.logOutLoading = false;
@@ -146,7 +165,7 @@ const userReducer = (state = initialState, action) => {
         break;
       case FOLLOW_SUCCESS:
         draft.followLoading = false;
-        draft.user.Followings.push({ id: action.data.UserId });
+        draft.myInfo.Followings.push({ id: action.data.UserId });
         draft.followDone = true;
         break;
       case FOLLOW_FAILURE:
@@ -160,7 +179,9 @@ const userReducer = (state = initialState, action) => {
         break;
       case UN_FOLLOW_SUCCESS:
         draft.unfollowLoading = false;
-        draft.user.Followings = draft.user.Followings.filter((v) => v.id !== action.data.UserId);
+        draft.myInfo.Followings = draft.myInfo.Followings.filter(
+          (v) => v.id !== action.data.UserId,
+        );
         draft.unfollowDone = true;
         break;
       case UN_FOLLOW_FAILURE:
@@ -175,17 +196,17 @@ const userReducer = (state = initialState, action) => {
       case REMOVE_FOLLOWER_SUCCESS:
         draft.removeFollowerLoading = false;
         draft.removeFollowerDone = true;
-        draft.user.Followers = draft.user.Followers.filter((v) => v.id !== action.data.UserId);
+        draft.myInfo.Followers = draft.myInfo.Followers.filter((v) => v.id !== action.data.UserId);
         break;
       case REMOVE_FOLLOWER_FAILURE:
         draft.removeFollowerLoading = false;
         draft.removeFollowerError = action.error;
         break;
       case ADD_POST_TO_ME:
-        draft.user.Posts.unshift({ id: action.data.id });
+        draft.myInfo.Posts.unshift({ id: action.data.id });
         break;
       case REMOVE_POST_OF_ME:
-        draft.user.Posts = draft.user.Posts.filter((post) => post.id !== action.data.PostId);
+        draft.myInfo.Posts = draft.myInfo.Posts.filter((post) => post.id !== action.data.PostId);
         break;
       case CHANGE_NICKNAME_REQUEST:
         draft.changeNicknameLoading = true;
@@ -195,7 +216,7 @@ const userReducer = (state = initialState, action) => {
       case CHANGE_NICKNAME_SUCCESS:
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
-        draft.user.nickname = action.data.nickname;
+        draft.myInfo.nickname = action.data.nickname;
         break;
       case CHANGE_NICKNAME_FAILURE:
         draft.changeNicknameLoading = false;
@@ -209,7 +230,7 @@ const userReducer = (state = initialState, action) => {
       case LOAD_FOLLOWINGS_SUCCESS:
         draft.loadFollowingsLoading = false;
         draft.loadFollowingsDone = true;
-        draft.user.Followings = action.data.followings;
+        draft.myInfo.Followings = action.data.followings;
         break;
       case LOAD_FOLLOWINGS_FAILURE:
         draft.loadFollowingsLoading = false;
@@ -223,7 +244,7 @@ const userReducer = (state = initialState, action) => {
       case LOAD_FOLLOWERS_SUCCESS:
         draft.loadFollowersLoading = false;
         draft.loadFollowersDone = true;
-        draft.user.Followers = action.data.followers;
+        draft.myInfo.Followers = action.data.followers;
         break;
       case LOAD_FOLLOWERS_FAILURE:
         draft.loadFollowersLoading = false;

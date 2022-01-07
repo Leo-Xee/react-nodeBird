@@ -3,6 +3,7 @@ import {
   FOLLOW_REQUEST,
   LOAD_FOLLOWERS_REQUEST,
   LOAD_FOLLOWINGS_REQUEST,
+  LOAD_MY_INFO_REQUEST,
   LOAD_USER_INFO_REQUEST,
   LOG_IN_REQUEST,
   LOG_OUT_REQUEST,
@@ -45,9 +46,16 @@ export function unfollowRequest(data) {
   };
 }
 
-export function loadUserInfoRequest() {
+export function loadUserInfoRequest(data) {
   return {
     type: LOAD_USER_INFO_REQUEST,
+    data,
+  };
+}
+
+export function loadMyInfoRequest() {
+  return {
+    type: LOAD_MY_INFO_REQUEST,
   };
 }
 

@@ -7,7 +7,7 @@ import AppLayout from "../components/AppLayout/AppLayout";
 import PostForm from "../components/PostForm/PostForm";
 import PostCard from "../components/PostCard/PostCard";
 import { loadPostsRequest } from "../redux/actions/post_action";
-import { loadUserInfoRequest } from "../redux/actions/user_action";
+import { loadMyInfoRequest } from "../redux/actions/user_action";
 import wrapper from "../redux/store/configureStore";
 
 function Home() {
@@ -56,7 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
   if (req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-  store.dispatch(loadUserInfoRequest());
+  store.dispatch(loadMyInfoRequest());
   store.dispatch(loadPostsRequest());
   store.dispatch(END);
   await store.sagaTask.toPromise();

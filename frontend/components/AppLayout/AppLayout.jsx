@@ -8,14 +8,14 @@ import LoginForm from "../LoginForm/LoginForm";
 import UserProfile from "../UserProfile/UserProfile";
 
 function AppLayout({ children }) {
-  const { user } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state) => state.user);
 
   return (
     <>
       <NavBar />
       <Row gutter={16} style={{ margin: "16px" }}>
         <Col xs={24} md={6}>
-          {user ? <UserProfile /> : <LoginForm />}
+          {myInfo ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}

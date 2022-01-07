@@ -16,6 +16,9 @@ import {
   UN_FOLLOW_REQUEST,
   UN_FOLLOW_SUCCESS,
   UN_FOLLOW_FAILURE,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
+  LOAD_MY_INFO_REQUEST,
   LOAD_USER_INFO_SUCCESS,
   LOAD_USER_INFO_FAILURE,
   LOAD_USER_INFO_REQUEST,
@@ -33,13 +36,33 @@ import {
   REMOVE_FOLLOWER_REQUEST,
 } from "../actions/type";
 
-function loadUserInfoAPI() {
+function loadMyInfoAPI() {
   return axios.get("/user");
 }
 
-function* loadUserInfo() {
+function* loadMyInfo() {
   try {
-    const result = yield call(loadUserInfoAPI);
+    const result = yield call(loadMyInfoAPI);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadUserInfoAPI(data) {
+  return axios.get(`/user/${data}`);
+}
+
+function* loadUserInfo(action) {
+  try {
+    const result = yield call(loadUserInfoAPI, action.data);
     yield put({
       type: LOAD_USER_INFO_SUCCESS,
       data: result.data,
@@ -232,6 +255,10 @@ function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
 }
 
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -272,6 +299,7 @@ export default function* userSaga() {
   yield all([
     fork(watchLogIn),
     fork(watchLoadUserInfo),
+    fork(watchLoadMyInfo),
     fork(watchLogOut),
     fork(watchSignUp),
     fork(watchFollow),
