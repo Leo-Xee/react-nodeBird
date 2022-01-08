@@ -42,6 +42,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// search specific user profile
 router.get("/:userId", async (req, res, next) => {
   try {
     const userWithoutPassword = await User.findOne({

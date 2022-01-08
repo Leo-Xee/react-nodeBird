@@ -23,34 +23,34 @@ import {
 
 function PostCard({ post }) {
   const [commentOpened, setCommentOpened] = useState(false);
-  const user = useSelector((state) => state.user.user);
+  const myInfo = useSelector((state) => state.user.myInfo);
   const dispatch = useDispatch();
 
   const onRetweet = useCallback(() => {
-    if (!user) return alert("로그인이 필요합니다.");
+    if (!myInfo) return alert("로그인이 필요합니다.");
     dispatch(retweetRequest({ postId: post.id }));
-  }, [user]);
+  }, [myInfo]);
 
   const onLike = useCallback(() => {
-    if (!user) return alert("로그인이 필요합니다.");
+    if (!myInfo) return alert("로그인이 필요합니다.");
     dispatch(likePostRequest({ postId: post.id }));
-  }, [user]);
+  }, [myInfo]);
 
   const onUnlike = useCallback(() => {
-    if (!user) return alert("로그인이 필요합니다.");
+    if (!myInfo) return alert("로그인이 필요합니다.");
     dispatch(unlikePostRequest({ postId: post.id }));
-  }, [user]);
+  }, [myInfo]);
 
   const onToggleComment = useCallback(() => {
     setCommentOpened((prev) => !prev);
   }, []);
 
   const onRemovePost = useCallback(() => {
-    if (!user) return alert("로그인이 필요합니다.");
+    if (!myInfo) return alert("로그인이 필요합니다.");
     dispatch(removePostRequest({ postId: post.id }));
-  }, [user]);
+  }, [myInfo]);
 
-  const like = post.Likers.find((v) => v.id === user.id);
+  const like = post.Likers.find((v) => v.id === myInfo.id);
   return (
     <>
       <Card
@@ -67,7 +67,7 @@ function PostCard({ post }) {
             key="ellipsis"
             content={
               <Button.Group>
-                {user && post.User.id === user.id ? (
+                {myInfo && post.User.id === myInfo.id ? (
                   <>
                     <Button>수정</Button>
                     <Button type="danger" onClick={onRemovePost}>
@@ -84,7 +84,7 @@ function PostCard({ post }) {
           </Popover>,
         ]}
         title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
-        extra={user && <FollowButton post={post} />}
+        extra={myInfo && <FollowButton post={post} />}
       >
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>

@@ -3,6 +3,7 @@ import {
   ADD_POST_REQUEST,
   LIKE_POST_REQUEST,
   LOAD_POSTS_REQUEST,
+  LOAD_POST_REQUEST,
   REMOVE_IMAGE,
   REMOVE_POST_REQUEST,
   RETWEET_REQUEST,
@@ -13,6 +14,13 @@ import {
 export function loadPostsRequest(data) {
   return {
     type: LOAD_POSTS_REQUEST,
+    data,
+  };
+}
+
+export function loadPostRequest(data) {
+  return {
+    type: LOAD_POST_REQUEST,
     data,
   };
 }
