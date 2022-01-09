@@ -57,7 +57,7 @@ function* loadMyInfo() {
 }
 
 function loadUserInfoAPI(data) {
-  return axios.get(`/user/${data}`);
+  return axios.get(`/user/${data.id}`);
 }
 
 function* loadUserInfo(action) {

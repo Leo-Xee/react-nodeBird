@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 
 import axios from "axios";
-import AppLayout from "../components/AppLayout/AppLayout";
-import PostForm from "../components/PostForm/PostForm";
-import PostCard from "../components/PostCard/PostCard";
-import { loadPostsRequest } from "../redux/actions/post_action";
-import { loadMyInfoRequest } from "../redux/actions/user_action";
-import wrapper from "../redux/store/configureStore";
+import AppLayout from "../../components/AppLayout/AppLayout";
+import PostForm from "../../components/PostForm/PostForm";
+import PostCard from "../../components/PostCard/PostCard";
+import { loadHashtagPostsRequest, loadPostsRequest } from "../../redux/actions/post_action";
+import { loadMyInfoRequest } from "../../redux/actions/user_action";
+import wrapper from "../../redux/store/configureStore";
+import { useRouter } from "next/router";
 
-function Home() {
+const Hashtag = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { tag } = router.query;
   const { hasMorePosts, mainPosts, loadPostLoading, retweetError } = useSelector(
     (state) => state.post,
   );
@@ -29,7 +32,7 @@ function Home() {
       if (hasMorePosts && !loadPostLoading) {
         if (window.scrollY + clientHeight > scrollHeight - 500) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
-          dispatch(loadPostsRequest(lastId));
+          dispatch(loadHashtagPostsRequest({ lastId, tag }));
         }
       }
     }
@@ -47,19 +50,19 @@ function Home() {
       ))}
     </AppLayout>
   );
-}
+};
 
 // 프론트 서버에서 Pre-rendering 하는 부분
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
   const cookie = req ? req.headers.cookie : "";
   axios.defaults.headers.Cookie = "";
   if (req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
   store.dispatch(loadMyInfoRequest());
-  store.dispatch(loadPostsRequest());
+  store.dispatch(loadHashtagPostsRequest({ tag: params.tag }));
   store.dispatch(END);
   await store.sagaTask.toPromise();
 });
 
-export default Home;
+export default Hashtag;

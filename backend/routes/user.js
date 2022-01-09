@@ -1,7 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const { User, Post } = require("../database/models");
+const { Op } = require("sequelize");
+const { User, Post, Image, Comment } = require("../database/models");
 const { isLoggedIn, isNotLoggedIn } = require("./middleware");
 
 const router = express.Router();
@@ -35,6 +36,65 @@ router.get("/", async (req, res, next) => {
       res.status(200).json(userWithoutPassword);
     } else {
       res.status(200).json(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.get("/:userId/posts", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (user) {
+      const where = {};
+      if (parseInt(req.query.lastId, 10)) {
+        where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+      }
+      const posts = await user.getPosts({
+        where,
+        limit: 10,
+        include: [
+          {
+            model: Image,
+          },
+          {
+            model: Comment,
+            include: [
+              {
+                model: User,
+                attributes: ["id", "nickname"],
+              },
+            ],
+          },
+          {
+            model: User,
+            attributes: ["id", "nickname"],
+          },
+          {
+            model: User,
+            through: "Like",
+            as: "Likers",
+            attributes: ["id"],
+          },
+          {
+            model: Post,
+            as: "Retweet",
+            include: [
+              {
+                model: User,
+                attributes: ["id", "nickname"],
+              },
+              {
+                model: Image,
+              },
+            ],
+          },
+        ],
+      });
+      res.status(200).json(posts);
+    } else {
+      res.status(404).send("존재하지 않는 사용자입니다.");
     }
   } catch (err) {
     console.error(err);

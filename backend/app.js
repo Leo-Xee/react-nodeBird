@@ -12,6 +12,7 @@ const passportConfig = require("./passport");
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
+const hashtagRouter = require("./routes/hashtag");
 
 const app = express();
 dotenv.config();
@@ -55,6 +56,7 @@ app.get("/", (req, res) => {
 app.use("/posts", postsRouter);
 app.use("/user", userRouter);
 app.use("/post", postRouter);
+app.use("/hashtag", hashtagRouter);
 
 const port = 5000;
 app.listen(port, () => {

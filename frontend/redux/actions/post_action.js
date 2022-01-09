@@ -9,7 +9,23 @@ import {
   RETWEET_REQUEST,
   UNLIKE_POST_REQUEST,
   UPLOAD_IMAGES_REQUEST,
+  LOAD_USER_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_REQUEST,
 } from "./type";
+
+export function loadUserPostsRequest(data) {
+  return {
+    type: LOAD_USER_POSTS_REQUEST,
+    data,
+  };
+}
+
+export function loadHashtagPostsRequest(data) {
+  return {
+    type: LOAD_HASHTAG_POSTS_REQUEST,
+    data,
+  };
+}
 
 export function loadPostsRequest(data) {
   return {
