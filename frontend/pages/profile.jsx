@@ -9,15 +9,15 @@ import FollowList from "../components/common/FollowList/FollowList";
 import { loadFollowersRequest, loadFollowingsRequest } from "../redux/actions/user_action";
 
 function profile() {
-  const { user } = useSelector((state) => state.user);
+  const { myInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
+    if (!myInfo) {
       Router.push("/");
+      alert("로그인이 필요합니다.");
     }
-  }, [user]);
+  }, [myInfo]);
 
   useEffect(() => {
     dispatch(loadFollowingsRequest());
@@ -31,8 +31,8 @@ function profile() {
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList header="팔로잉" data={user.Followings} />
-        <FollowList header="팔로워" data={user.Followers} />
+        <FollowList header="팔로잉" data={myInfo.Followings} />
+        <FollowList header="팔로워" data={myInfo.Followers} />
       </AppLayout>
     </>
   );

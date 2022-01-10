@@ -19,7 +19,7 @@ const User = () => {
   const { hasMorePosts, mainPosts, loadPostLoading, retweetError } = useSelector(
     (state) => state.post,
   );
-  const { userInfo, myInfo } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (retweetError) {
@@ -55,7 +55,7 @@ const User = () => {
           <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
         </Head>
       )}
-      {userInfo && userInfo.id !== myInfo.id ? (
+      {userInfo ? (
         <Card
           style={{ marginBottom: 20 }}
           actions={[
