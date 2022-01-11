@@ -79,11 +79,12 @@ function* loadUserPosts(action) {
 }
 
 function loadHashtagPostsAPI(data) {
-  return axios.get(`/hashtag/${data.tag}?lastId=${data.lastId || 0}`);
+  return axios.get(`/hashtag/${encodeURIComponent(data.tag)}?lastId=${data.lastId || 0}`);
 }
 
 function* loadHashtagPosts(action) {
   try {
+    console.log("LoadHashTag console");
     const result = yield call(loadHashtagPostsAPI, action.data);
     yield put({
       type: LOAD_HASHTAG_POSTS_SUCCESS,
@@ -134,7 +135,7 @@ function* addPost(action) {
       data: result.data.id,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
       error: err.response.data,

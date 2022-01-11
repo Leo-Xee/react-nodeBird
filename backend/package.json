@@ -20,7 +20,8 @@
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "sequelize": "6.12.2",
-    "sequelize-cli": "^6.3.0"
+    "sequelize-cli": "^6.3.0",
+    "swr": "^1.1.2"
   },
   "devDependencies": {
     "concurrently": "^6.5.1",

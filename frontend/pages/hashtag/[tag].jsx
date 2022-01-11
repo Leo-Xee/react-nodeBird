@@ -3,33 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { END } from "redux-saga";
 
 import axios from "axios";
+import { useRouter } from "next/router";
 import AppLayout from "../../components/AppLayout/AppLayout";
-import PostForm from "../../components/PostForm/PostForm";
 import PostCard from "../../components/PostCard/PostCard";
-import { loadHashtagPostsRequest, loadPostsRequest } from "../../redux/actions/post_action";
+import { loadHashtagPostsRequest } from "../../redux/actions/post_action";
 import { loadMyInfoRequest } from "../../redux/actions/user_action";
 import wrapper from "../../redux/store/configureStore";
-import { useRouter } from "next/router";
 
 const Hashtag = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { tag } = router.query;
-  const { hasMorePosts, mainPosts, loadPostLoading, retweetError } = useSelector(
-    (state) => state.post,
-  );
-  const myInfo = useSelector((state) => state.user.myInfo);
-
-  useEffect(() => {
-    if (retweetError) {
-      alert(retweetError);
-    }
-  }, [retweetError]);
+  const { hasMorePosts, mainPosts, loadPostsLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
     function onScroll() {
       const { clientHeight, scrollHeight } = document.documentElement;
-      if (hasMorePosts && !loadPostLoading) {
+      if (hasMorePosts && !loadPostsLoading) {
         if (window.scrollY + clientHeight > scrollHeight - 500) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
           dispatch(loadHashtagPostsRequest({ lastId, tag }));
@@ -40,11 +30,10 @@ const Hashtag = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [hasMorePosts, loadPostLoading, mainPosts]);
+  }, [hasMorePosts, loadPostsLoading, mainPosts, tag]);
 
   return (
     <AppLayout>
-      {myInfo && <PostForm />}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

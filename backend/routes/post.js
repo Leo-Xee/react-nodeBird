@@ -32,19 +32,20 @@ const upload = multer({
 // addPost | req: content
 router.post("/", isLoggedIn, upload.none(), async (req, res, next) => {
   try {
-    const hashTags = req.body.content.match(/[^\s#]+/g);
+    const hashTags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
     if (hashTags) {
-      await Promise.all(
+      const result = await Promise.all(
         hashTags.map((tag) =>
           Hashtag.findOrCreate({
-            where: { name: tag.slice(0).toLowerCase() },
+            where: { name: tag.slice(1).toLowerCase() },
           }),
         ),
       );
+      await post.addHashtags(result.map((v) => v[0]));
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
