@@ -13,7 +13,7 @@ function NicknameEditForm() {
   }, [nickname]);
 
   return (
-    <Form style={{ marginBottom: "20px", border: "1px solid #d9d9d9" }}>
+    <Form style={{ marginTop: "20px", border: "1px solid #d9d9d9" }}>
       <Input.Search
         id="nickname"
         value={nickname}

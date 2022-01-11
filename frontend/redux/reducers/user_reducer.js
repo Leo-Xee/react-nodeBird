@@ -75,17 +75,6 @@ const initialState = {
   myInfo: null, // 로그인한 사용자의 정보
 };
 
-// const dummyUser = (data) => {
-//   return {
-//     ...data,
-//     nickname: "레오",
-//     id: 1,
-//     Posts: [{ id: 1 }],
-//     Followings: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
-//     Followers: [{ nickname: "다현" }, { nickname: "사나" }, { nickname: "나연" }],
-//   };
-// };
-
 const userReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {

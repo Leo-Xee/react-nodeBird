@@ -7,6 +7,7 @@ import AppLayout from "../components/AppLayout/AppLayout";
 import NicknameEditForm from "../components/NicknameEditForm/NicknameEditForm";
 import FollowList from "../components/common/FollowList/FollowList";
 import { loadFollowersRequest, loadFollowingsRequest } from "../redux/actions/user_action";
+import UserProfile from "../components/UserProfile/UserProfile";
 
 function profile() {
   const { myInfo } = useSelector((state) => state.user);
@@ -14,15 +15,21 @@ function profile() {
 
   useEffect(() => {
     if (!myInfo) {
-      Router.push("/");
       alert("로그인이 필요합니다.");
+      Router.push("/");
     }
   }, [myInfo]);
 
   useEffect(() => {
-    dispatch(loadFollowingsRequest());
-    dispatch(loadFollowersRequest());
+    if (myInfo) {
+      dispatch(loadFollowingsRequest());
+      dispatch(loadFollowersRequest());
+    }
   }, []);
+
+  if (!myInfo) {
+    return null;
+  }
 
   return (
     <>
@@ -30,6 +37,7 @@ function profile() {
         <title>내 프로필 | NodeBird</title>
       </Head>
       <AppLayout>
+        <UserProfile />
         <NicknameEditForm />
         <FollowList header="팔로잉" data={myInfo.Followings} />
         <FollowList header="팔로워" data={myInfo.Followers} />

@@ -43,100 +43,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:userId/posts", async (req, res, next) => {
-  try {
-    const user = await User.findOne({ where: { id: req.params.userId } });
-    if (user) {
-      const where = {};
-      if (parseInt(req.query.lastId, 10)) {
-        where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
-      }
-      const posts = await user.getPosts({
-        where,
-        limit: 10,
-        include: [
-          {
-            model: Image,
-          },
-          {
-            model: Comment,
-            include: [
-              {
-                model: User,
-                attributes: ["id", "nickname"],
-              },
-            ],
-          },
-          {
-            model: User,
-            attributes: ["id", "nickname"],
-          },
-          {
-            model: User,
-            through: "Like",
-            as: "Likers",
-            attributes: ["id"],
-          },
-          {
-            model: Post,
-            as: "Retweet",
-            include: [
-              {
-                model: User,
-                attributes: ["id", "nickname"],
-              },
-              {
-                model: Image,
-              },
-            ],
-          },
-        ],
-      });
-      res.status(200).json(posts);
-    } else {
-      res.status(404).send("존재하지 않는 사용자입니다.");
-    }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// search specific user profile
-router.get("/:userId", async (req, res, next) => {
-  try {
-    const userWithoutPassword = await User.findOne({
-      where: { id: req.params.userId },
-      attributes: {
-        exclude: ["password"],
-      },
-      include: [
-        {
-          model: Post,
-          attributes: ["id"],
-        },
-        {
-          model: User,
-          as: "Followings",
-          attributes: ["id"],
-        },
-        {
-          model: User,
-          as: "Followers",
-          attributes: ["id"],
-        },
-      ],
-    });
-    if (userWithoutPassword) {
-      res.status(200).json(userWithoutPassword);
-    } else {
-      res.status(403).send("존재하지 않는 사용자입니다.");
-    }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
 // sign up
 router.post("/signup", isNotLoggedIn, async (req, res, next) => {
   try {
@@ -277,6 +183,101 @@ router.delete("/follower/:userId", async (req, res, next) => {
     if (!user) return res.status(403).send("존재하지 않는 유저입니다.");
     await user.removeFollowings(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// search specific user profile
+router.get("/:userId", async (req, res, next) => {
+  try {
+    const userWithoutPassword = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: {
+        exclude: ["password"],
+      },
+      include: [
+        {
+          model: Post,
+          attributes: ["id"],
+        },
+        {
+          model: User,
+          as: "Followings",
+          attributes: ["id"],
+        },
+        {
+          model: User,
+          as: "Followers",
+          attributes: ["id"],
+        },
+      ],
+    });
+    if (userWithoutPassword) {
+      res.status(200).json(userWithoutPassword);
+    } else {
+      res.status(403).send("존재하지 않는 사용자입니다.");
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+router.get("/:userId/posts", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    if (user) {
+      const where = {};
+      if (parseInt(req.query.lastId, 10)) {
+        where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+      }
+      const posts = await user.getPosts({
+        where,
+        limit: 10,
+        include: [
+          {
+            model: Image,
+          },
+          {
+            model: Comment,
+            include: [
+              {
+                model: User,
+                attributes: ["id", "nickname"],
+              },
+            ],
+          },
+          {
+            model: User,
+            attributes: ["id", "nickname"],
+          },
+          {
+            model: User,
+            through: "Like",
+            as: "Likers",
+            attributes: ["id"],
+          },
+          {
+            model: Post,
+            as: "Retweet",
+            include: [
+              {
+                model: User,
+                attributes: ["id", "nickname"],
+              },
+              {
+                model: Image,
+              },
+            ],
+          },
+        ],
+      });
+      res.status(200).json(posts);
+    } else {
+      res.status(404).send("존재하지 않는 사용자입니다.");
+    }
   } catch (err) {
     console.error(err);
     next(err);

@@ -1,30 +1,21 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Row, Col } from "antd";
 
 import NavBar from "./NavBar/NavBar";
-import LoginForm from "../LoginForm/LoginForm";
-import UserProfile from "../UserProfile/UserProfile";
 
 function AppLayout({ children }) {
-  const { myInfo } = useSelector((state) => state.user);
-
   return (
-    <>
+    <main style={{ backgroundColor: "#fafafa" }}>
       <NavBar />
       <Row gutter={16} style={{ margin: "16px" }}>
-        <Col xs={24} md={6}>
-          {myInfo ? <UserProfile /> : <LoginForm />}
-        </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} md={6} xl={8} />
+        <Col xs={24} md={12} xl={8}>
           {children}
         </Col>
-        <Col xs={24} md={6}>
-          Right Menu
-        </Col>
+        <Col xs={24} md={6} xl={8} />
       </Row>
-    </>
+    </main>
   );
 }
 

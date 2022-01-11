@@ -26,14 +26,14 @@ function signup() {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [term, setTerm] = useState(false);
   const [isTermError, setIsTermError] = useState(false);
-  const { signUpLoading, signUpDone, signUpError, user } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, myInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
+    if (myInfo) {
       Router.replace("/");
     }
-  }, [user]);
+  }, [myInfo]);
 
   useEffect(() => {
     if (signUpDone) {

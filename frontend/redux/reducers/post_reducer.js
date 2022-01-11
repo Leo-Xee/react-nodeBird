@@ -70,39 +70,6 @@ const initialState = {
   retweetDone: false,
 };
 
-// function loadMainPost(num) {
-//   return Array(num)
-//     .fill()
-//     .map(() => ({
-//       id: shortId.generate(),
-//       User: {
-//         id: shortId.generate(),
-//         nickname: faker.name.findName(),
-//       },
-//       content: faker.lorem.paragraph(),
-//       Images: [{ src: faker.image.image() }, { src: faker.image.image() }],
-//       Comments: [{ User: { nickname: faker.name.findName() }, content: faker.lorem.sentence() }],
-//     }));
-// }
-
-// const dummyPost = (data) => {
-//   return {
-//     id: data.id,
-//     User: { id: 1, nickname: "레오" },
-//     content: data.content,
-//     Images: [],
-//     Comments: [],
-//   };
-// };
-
-// const dummyComment = (data) => {
-//   return {
-//     id: shortId.generate(),
-//     User: { id: 1, nickname: "레오" },
-//     content: data.content,
-//   };
-// };
-
 const postReducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {

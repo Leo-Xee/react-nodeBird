@@ -3,12 +3,13 @@ import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 
+import Router from "next/router";
 import { loginRequest } from "../../redux/actions/user_action";
 import useInput from "../../hooks/useInput";
 
 function LoginForm() {
   const [{ email, password }, onChange] = useInput({ email: "", password: "" });
-  const { logInLoading, logInError } = useSelector((state) => state.user);
+  const { logInLoading, logInError, myInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,8 +18,13 @@ function LoginForm() {
     }
   }, [logInError]);
 
+  useEffect(() => {
+    if (myInfo) {
+      Router.push("/");
+    }
+  }, [myInfo]);
+
   const onSubmitHandler = useCallback(() => {
-    console.log(email, password);
     dispatch(loginRequest({ email, password }));
   }, [email, password]);
 

@@ -52,7 +52,7 @@ function PostForm() {
   }, [text, imagePaths]);
 
   return (
-    <Form encType="multipart/form-data" onFinish={onSubmit}>
+    <Form encType="multipart/form-data" onFinish={onSubmit} style={{ backgroundColor: "#ffffff" }}>
       <Input.TextArea
         value={text}
         maxLength={100}

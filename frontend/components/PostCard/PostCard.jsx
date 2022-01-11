@@ -54,6 +54,7 @@ function PostCard({ post }) {
   return (
     <>
       <Card
+        style={{ marginTop: "20px" }}
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="tweet" onClick={onRetweet} />,

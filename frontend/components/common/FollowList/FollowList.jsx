@@ -19,7 +19,7 @@ function FollowList({ header, data }) {
   return (
     <List
       grid={{ gutter: 4 }}
-      style={{ marginTop: "20px" }}
+      style={{ marginTop: "20px", backgroundColor: "#ffffff" }}
       header={<div>{header}</div>}
       loadMore={
         <div style={{ marginBottom: "10px", display: "flex", justifyContent: "center" }}>
