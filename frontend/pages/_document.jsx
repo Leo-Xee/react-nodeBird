@@ -33,9 +33,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <link rel="icon" href="/static/favicom.png" type="image/x-icon" />
-        </Head>
+        <Head />
         <body>
           <Main />
           <NextScript />
