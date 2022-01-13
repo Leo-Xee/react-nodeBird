@@ -1,5 +1,5 @@
 import React from "react";
-import Document from "next/document";
+import Document, { Head, Main, Html, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 
 class MyDocument extends Document {
@@ -28,6 +28,20 @@ class MyDocument extends Document {
     } finally {
       sheet.seal();
     }
+  }
+
+  render() {
+    return (
+      <Html>
+        <Head>
+          <link rel="icon" href="/static/favicom.png" type="image/x-icon" />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
   }
 }
 
