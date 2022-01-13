@@ -8,8 +8,9 @@ import {
   EllipsisOutlined,
   HeartTwoTone,
 } from "@ant-design/icons";
-
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+
 import PostImages from "./PostImages/PostImages";
 import PostCardContent from "./PostCardContent/PostCardContent";
 import CommentForm from "./CommentForm/CommentForm";
@@ -21,6 +22,7 @@ import {
   unlikePostRequest,
 } from "../../redux/actions/post_action";
 
+moment.locale("ko");
 function PostCard({ post }) {
   const [commentOpened, setCommentOpened] = useState(false);
   const myInfo = useSelector((state) => state.user.myInfo);
@@ -89,6 +91,7 @@ function PostCard({ post }) {
       >
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+            <div style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD")}</div>
             <Card.Meta
               avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
               title={post.Retweet.User.nickname}
@@ -96,11 +99,14 @@ function PostCard({ post }) {
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <div style={{ float: "right" }}>{moment(post.createdAt).format("YYYY.MM.DD")}</div>
+            <Card.Meta
+              avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentOpened && (

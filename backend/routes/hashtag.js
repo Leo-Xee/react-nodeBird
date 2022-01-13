@@ -1,6 +1,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
-const { Post, User, Image, Hashtag } = require("../database/models");
+const { Post, User, Image, Hashtag, Comment } = require("../database/models");
 
 const router = express.Router();
 
@@ -27,6 +27,7 @@ router.get("/:tag", async (req, res, next) => {
           as: "Likers",
           attributes: ["id"],
         },
+        { model: Comment, include: { model: User, attributes: ["id", "nickname"] } },
         {
           model: Post,
           as: "Retweet",
